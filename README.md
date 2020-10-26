@@ -1,2 +1,2 @@
-# ba-r
-Buainwaa Analytics Menggunakan R
+# Business Analytics - R
+Materi Business Analytics Menggunakan R
