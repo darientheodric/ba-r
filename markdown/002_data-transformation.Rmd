@@ -1,0 +1,123 @@
+---
+title: "Modul 4: Membuat Model Machine Learning"
+author: "Muhammad Apriandito"
+output:
+    prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    fig_height: 6
+    fig_width: 9
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+# Set Knit
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+```
+
+Pada praktek kali ini kita akan belajar membuat model machine learning menggunakan Tidy models. 
+
+## 1. Load Library
+Tahapan pertama adalah meload library yang akan digunakan terlebih dahulu. 
+
+```{r load library,  message=FALSE, warning=FALSE}
+# Load library
+library(tidyverse)
+library(tidymodels)
+library(randomForest)
+```
+
+## 2. Load Data
+Memuat data kedalam Environtment R 
+
+```{r load data}
+# Load Data
+df <- read_csv2("data/raw/bank-marketing.csv")
+```
+
+```{r}
+df_split <- initial_split(df, prop = 0.7)
+df_split
+```
+```{r}
+df_split %>%
+  training() %>%
+  glimpse()
+```
+
+```{r}
+df_recipe <- training(df_split) %>%
+  recipe(y ~.) %>%
+  prep()
+
+df_recipe
+```
+
+```{r}
+df_testing <- df_recipe %>%
+  bake(testing(df_split)) 
+
+glimpse(df_testing)
+```
+
+```{r}
+df_training <- juice(df_recipe)
+glimpse(df_training)
+```
+
+```{r}
+# Train
+df_rf <-  rand_forest(trees = 100, mode = "classification") %>%
+  set_engine("randomForest") %>%
+  fit(y ~ ., data = df_training)
+```
+
+```{r}
+# Predict
+predict(df_rf, df_testing)
+```
+
+```{r}
+df_rf %>%
+  predict(df_testing) %>%
+  bind_cols(df_testing) %>%
+  glimpse()
+```
+
+```{r}
+multi_metrics <- metric_set(accuracy, sensitivity, recall, f_meas)
+```
+
+```{r}
+df_rf %>%
+  predict(df_testing) %>%
+  bind_cols(df_testing) %>%
+  multi_metrics(truth = y, estimate = .pred_class)
+```
+
+```{r}
+df_probs <- df_rf %>%
+  predict(df_testing, type = "prob") %>%
+  bind_cols(df_testing)
+```
+
+```{r}
+df_probs%>%
+  gain_curve(y , .pred_no) %>%
+  autoplot()
+```
+
+```{r}
+df_probs%>%
+  roc_curve(y, .pred_no) %>%
+  autoplot()
+```
+
+```{r}
+predict(df_rf, df_testing, type = "prob") %>%
+  bind_cols(predict(df_rf, df_testing)) %>%
+  bind_cols(select(df_testing, y)) %>%
+  metrics(y, .pred_yes, estimate = .pred_class)
+```
+
