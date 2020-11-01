@@ -1,0 +1,122 @@
+---
+title: "Modul 4: Machine Learning"
+author: "Big Data and Business Analytics Laboratory, SBM-ITB"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+# Set Knit
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+```
+
+Machine Learning merupakan cabang ilmu dari Artificial Intelligence (Kecerdasan Buatan) yang berfokus pada pengembangan sistem yang mampu belajar "sendiri" (Tidak harus di program secara manual oleh manusia). 
+
+Di praktek kali ini kita akan belajar membuat model untuk memprediksi apakah seseorang akan berlangganan Deposito Berjanka (Deposito Jangka Panjang). 
+
+## Load Library
+Sebelum kita mulai, kita harus mengaktifkan library-library yang akan kita gunakan terlebih dulu
+
+```{r}
+# Load library
+library(tidyverse)
+library(tidymodels)
+library(randomForest)
+```
+
+## Import Data
+
+```{r}
+# Load Data
+df_bm <- read_csv2("data/raw/bank-marketing.csv")
+```
+
+## Split Data
+Sebelum dimodelkan, data harus dibagi menjadi dua yaitu data train untuk membuat model dan data test untuk menguji akurasi model. Umumnya, data dibagi dengan proporsi 70% train dan 30% test.
+
+```{r}
+# Split Data with 70:30 Proportion
+df_bm_split <- initial_split(df_bm, prop = 0.7)
+df_bm_split
+```
+
+```{r}
+# See Training Data
+df_bm_split %>%
+  training() %>%
+  glimpse()
+```
+
+## Membut Alur Pemrosesan Data
+Setelah membagi data kedalam training dan testing, kita dapat membuat alur pemrosesan data. Disini menenetukan role masing-masing variable, seperti menentukan variable yang akan diprediksi, dan yang memprediksi.
+
+```{r}
+# Create Recipe
+df_bm_recipe <- training(df_bm_split) %>%
+  recipe(y ~.) %>%
+  prep()
+
+df_bm_recipe
+```
+
+Untuk melihat bagaimana hasil pemrosesan ini pada data traning kita. Kita dapat menggunakan fungsi ```juice()```.
+
+```{r}
+# See training data using juice
+df_bm_training <- juice(df_bm_recipe)
+glimpse(df_bm_training)
+```
+
+Jika sudah sesuai, kita dapat mengaplikasikannya kedalam data training menggunakan fungsi ```bake```.
+
+```{r}
+# See the testing data using bake
+df_bm_testing <- df_bm_recipe %>%
+  bake(testing(df_bm_split)) 
+
+glimpse(df_bm_testing)
+```
+
+## Training
+Tahap selanjutnya ada ada melakukan training model, ditahap ini kita juga menetukan algoritma apa yang akan kita gunakan untuk melakukan prediksi klasifikasi. Di modul ini kita akan menggunakan algoritma random forest. 
+```{r}
+# Train
+df_bm_rf <-  rand_forest(trees = 100, mode = "classification") %>%
+  set_engine("randomForest") %>%
+  fit(y ~ ., data = df_bm_training)
+```
+
+## Prediksi ke data Testing
+Selanjutnya, dengan model yang kita buat kita dapat melakukan prediksi ke data testing. 
+```{r}
+# Predict
+predict(df_bm_rf, df_bm_testing)
+```
+
+```{r}
+# Predict and Bind
+df_bm_rf %>%
+  predict(df_bm_testing) %>%
+  bind_cols(df_bm_testing) %>%
+  glimpse()
+```
+
+##  Mengukur Performa Model
+
+Tahapan terakhir adalah mengecek seberapa baik model kita dalam melakukan prediksi. 
+```{r}
+# Define metric for evaluation
+multi_metrics <- metric_set(accuracy, sensitivity, recall, f_meas)
+
+# See Performance Evaluation
+df_bm_rf %>%
+  predict(df_bm_testing) %>%
+  bind_cols(df_bm_testing) %>%
+  multi_metrics(truth = y, estimate = .pred_class)
+```
+
+Dapat kita lihat ternyata  Model kita memiki akurasi yang sangat baik, yaitu diatas 90%. 

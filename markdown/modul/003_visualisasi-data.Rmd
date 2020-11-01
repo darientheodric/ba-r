@@ -1,0 +1,183 @@
+---
+title: "Modul 3: Visualisasi Data"
+author: "Big Data and Business Analytics Laboratory, SBM-ITB"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+# Set Knit
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+```
+
+Visualisasi atau data visualization merupakan teknik untuk mempresentasikan data yang terstrukturmaupun tidak dengan grafik atau bagan untuk menampilkan info yang tersembunyi yang ada didalam data. 
+
+Di modul kali in kita akan belajar melakukan visualisasi data menggunakan R. Dataset yang akan kita gunakan dalam modul kali ini sama seperti pada modul sebelumnya yaitu dataset Bank Marketing yang tersedia di Kaggle.
+
+## Import Data
+
+Sama seperti modul sebelumnya, untuk dapat melakukan visualisasi data. Kita harus mengimport datanya terlebih dahulu. 
+
+```{r}
+# Load Package readr
+library(readr)
+
+# Import data bank-marketing.csv from data/raw directory
+df <- read_csv2("data/raw/bank-marketing.csv")
+```
+
+Setelah kita mengimport datasetnya, kita bisa melihat rangkuman informasi dataset tersebut menggunakan fungsi glimpse dari package ```dplyr``` yang sudah kita pelajari di modul sebelumnya. 
+
+```{r}
+# Load Package readr
+library(dplyr)
+
+# Melihat rangkuman data
+glimpse(df)
+```
+
+## Visualisasi data menggunakan base R
+
+Pada dasarnya di R kita dapat melakukan visualiasi tanpa package apapun.
+
+### Histogram
+
+Kita dapat melakukan visualisasi histogram untuk melihat distribusi umur pelanggan dengan funsi hist()
+
+```{r}
+# Visualisasi Histogram
+hist(df$age)
+```
+
+Sayangnya visualisasi ini menggunakan base R terbatas, dan visualisasinya kurang menarik. Untungnya di R ada sebuah library visualisasi yang cukup terkennal yaitu ggplot2.
+
+## Visualisasi data menggunakan GGplot2
+gglpot2 merupakan Packages untuk visualisasi data yang diciptakan oleh Hadley Wickham. GGplot2 memiliki kelebihannya dalam pembuatan gambar yang elegan dan kompleks. Sebelum itu kita harus package GGplot2 kedalam R environtmen kita. 
+
+```{r}
+# Load library ggplot2
+library(ggplot2)
+```
+
+### Histogram
+
+Kita akan mencoba untuk melakukan visualisasi histrogram dengan variable yang sama dengan ggplot2
+
+```{r warning=FALSE}
+# Histogram Age
+ggplot(data = df, aes(x = age)) +
+  geom_histogram(colour = "#e9ecef", fill = "#00bfc4", alpha = 0.6)
+```
+
+lebih menarik bukan?
+
+Selanjutnya kita akan memvisialisasikan distribusi target variable kita dengan barchart karena target variable kita bertipe kategorik. 
+
+```{r}
+# Bar Chart
+ggplot(data = df, aes(x = y, fill = y)) +
+  geom_bar()
+```
+
+```{r}
+# Scatter Plot
+ggplot(data = df, aes(x = age, y = balance, colour = y)) +
+  geom_point()
+```
+
+```{r}
+# line plot
+ggplot(data = df, aes(x = duration, y = balance)) +
+  geom_line(colour = "#00bfc4")
+```
+
+```{r}
+# Box Plot
+ggplot(data = df, aes(x = y, y = duration, fill = y)) +
+  geom_boxplot()
+```
+
+## Kustomisasi Graph
+
+Graph yang divisualisasikan dapat dikustomisasi sehingga lebih menarik dan informatif. Berikut ini beberapa contoh kustomisasi yang dapat kita lakukan. Untuk kustomisasi lengkap bisa melihat dokumentasi ggplot2. 
+
+### Judul dan sub judul
+
+```{r}
+# Bar Chart
+ggplot(data = df, aes(x = y, fill = y)) +
+  geom_bar() +
+  labs(
+    title = "Perbandingan Pelanggan Berlangganan Deposito",
+    subtitle = "Bank Marketing Dataset",
+    caption = "Sumber Data: Kaggle"
+  )
+```
+
+### Mengganti Label X dan Y
+
+```{r}
+# Bar Chart
+ggplot(data = df, aes(x = y, fill = y)) +
+  geom_bar() +
+  labs(
+    title = "Perbandingan Pelanggan Berlangganan Deposito",
+    subtitle = "Bank Marketing Dataset",
+    caption = "Sumber Data: Kaggle"
+  ) +
+  xlab("Berlangganan Deposito") +
+  ylab("Jumlah")
+```
+
+### Mengganti Posisi Legenda
+
+```{r message=TRUE, warning=TRUE}
+# Bar Chart
+ggplot(data = df, aes(x = y, fill = y)) +
+  geom_bar() +
+  labs(
+    title = "Perbandingan Pelanggan Berlangganan Deposito",
+    subtitle = "Bank Marketing Dataset",
+    caption = "Sumber Data: Kaggle"
+  ) +
+  xlab("Berlangganan Deposito") +
+  ylab("Jumlah") +
+  theme(legend.position = "none")
+```
+
+### Mengganti Tema
+
+```{r}
+# Bar Chart
+ggplot(data = df, aes(x = y, fill = y)) +
+  geom_bar() +
+  theme_classic() +
+  labs(
+    title = "Perbandingan Pelanggan Berlangganan Deposito",
+    subtitle = "Bank Marketing Dataset",
+    caption = "Sumber Data: Kaggle"
+  ) +
+  xlab("Berlangganan Deposito") +
+  ylab("Jumlah") +
+  theme(legend.position = "none")
+```
+
+### Membuat Interaktif dengan Plotly
+
+```{r message=FALSE, warning=FALSE}
+# Load Package Plotly
+library(plotly)
+```
+
+```{r eval=FALSE, include=TRUE}
+# Interaktif Chart
+line_chart <- ggplot(data = df, aes(x = duration, y = balance)) +
+  geom_line(colour = "#00bfc4")
+
+ggplotly(line_chart)
+```
+

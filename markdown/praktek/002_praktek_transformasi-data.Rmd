@@ -1,6 +1,6 @@
 ---
-title: 'Praktek Modul 1: Pengenalan Bahasa R'
-author: "Muhammad Apriandito"
+title: 'Praktek Modul 2: Transformasi Data'
+author: "Big Data and Business Analytics Laboratory, SBM-ITB"
 output: html_document
 ---
 
@@ -8,22 +8,73 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+Sekarang kamu sudah paham teknik-teknik melakukan transformasi data menggunakan package ```dplyr```. Sekarang saatnya kita meangaplikasikan ke kasus baru.  Kita akan menggunakan dataset telco customer churn dataset yang juga tersedia di Kaggle.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Tentang Dataset
+Telco Customer Churn merupakan ____
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+# Load Library
+library(readr)
 
-```{r cars}
-summary(cars)
+# Import Data
+df_churn <- read_csv("data/raw/customer-churn.csv")
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+# Melihat 5 baris pertama data
+head(df_churn, 5)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Soal Praktek
+Di praktek kali ini kamu akan diminta untuk menjawab beberapa soal menggunakan library ```dply``` sama seperti yang sudah dipelajari di modul sebelumnya. Jangan lupa untuk mengaktifkan libraynya terlebih dahulu.
+
+```{r}
+# Load library dplyr
+library(dplyr)
+```
+
+### Contoh Soal: Berapa banyak jumlah pelanggan yang melakukan churn?
+
+```{r}
+df_churn %>%
+  filter(Churn == "Yes") %>%
+  count()
+```
+
+Gampang bukan? Mari kita kerjakan soalnya
+
+### Soal 1: Berapa banyak pelanggan yang tidak churn?
+```{r}
+df_churn %>%
+  filter(Churn == "No") %>%
+  count()
+```
+
+### Soal 2: Carilah 5 pelanggan yang memiliki jumlah tagihan tertinggi?
+```{r}
+df_churn %>%
+  arrange(desc(MonthlyCharges)) %>%
+  select(customerID, MonthlyCharges ) %>%
+  head(5)
+```
+
+### Soal 3: Carilah daftar pelanggan yang churn dibawah 3 bulan berlangganan
+```{r}
+df_churn %>%
+  filter(Churn == "Yes") %>%
+  filter(tenure < 3)
+```
+
+### Soal 4: Carilah daftar pelanggan yang berlangganan layanan telepon
+```{r}
+df_churn %>%
+  filter(PhoneService == "Yes")
+```
+
+### Soal 5: Carilah rata-rata tagihan bulanan pelanggan yang churn dan tidak
+```{r}
+df_churn %>%
+  filter(Churn == "Yes") %>%
+  summarise(mean(MonthlyCharges))
+```
