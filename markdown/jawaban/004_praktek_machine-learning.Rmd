@@ -105,3 +105,28 @@ churn_nb %>%
   bind_cols(df_churn_testing) %>%
   multi_metrics(truth = Churn, estimate = .pred_class)
 ```
+
+### Prediksi ke Data Bary
+
+```{r}
+df_churn_new <- read_csv("data/raw/customer-churn_new.csv") 
+head(df_churn_new)
+```
+
+```{r}
+# Predict and Save the prediction Result
+df_churn_predicted <- predict(churn_nb, df_churn_new) %>%
+  bind_cols(df_churn_new) %>%
+  write_csv("customer-churn_predicted.csv")
+
+# Show the prediction result
+print(df_churn_predicted)
+```
+
+```{r}
+# From the new data, who will churn?
+df_churn_predicted %>%
+  filter(.pred_class == "Yes") %>%
+  select(customerID)
+```
+

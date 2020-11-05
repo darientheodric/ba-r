@@ -13,3 +13,67 @@ editor_options:
 # Set Knit
 knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
+
+## Selamat Datang di R
+
+```{r}
+#
+```
+
+## Tipe Data
+
+R memiliki 5 tipe data yaitu
+
+- Character
+- Numeric (real or decimal)
+- Integer
+- Logical
+- Complex
+
+
+### Numeric
+
+```{r}
+num <- 1.2
+class(num)
+```
+
+### Integer
+
+```{r}
+int <- 2L
+class(int)
+```
+
+### Character
+
+```{r}
+char <- "datacamp"
+class(char)
+```
+
+### Logical
+
+```{r}
+log_true <- TRUE
+class(log_true)
+```
+
+### Complex
+
+```{r}
+complex = 4 + 3i
+class(complex)
+```
+## Struktur Data
+- Vectors
+- Lists
+- Matrices
+- Arrays
+- Factors
+- Data Frames
+
+```{r}
+
+```
+

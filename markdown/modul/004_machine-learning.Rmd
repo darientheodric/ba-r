@@ -14,109 +14,183 @@ editor_options:
 knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
-Machine Learning merupakan cabang ilmu dari Artificial Intelligence (Kecerdasan Buatan) yang berfokus pada pengembangan sistem yang mampu belajar "sendiri" (Tidak harus di program secara manual oleh manusia). 
-
-Di praktek kali ini kita akan belajar membuat model untuk memprediksi apakah seseorang akan berlangganan Deposito Berjanka (Deposito Jangka Panjang). 
+Di praktek kali ini kita akan belajar membuat model machine learning untuk memprediksi apakah seorang nasabah akan berlangganan Deposito Berjangka (Term Deposit) menggunakan Bank Marketing Dataset seperti yang sudah kita gunakan di modul-modul sebelumnya. Seperti yang sudah dijelaskan sebelumnya, bahwa dataset bank marketing ini berisikan informasi terkait Marketing Campaign sebuah Bank di Portugis. Marketing Campaign ini bertujuan untuk menawarkan deposito berjangka (Deposito Jangka Panjang) kepada para nasabah. 
 
 ## Load Library
-Sebelum kita mulai, kita harus mengaktifkan library-library yang akan kita gunakan terlebih dulu
+Pada praktek-praktek sebelumnya, teman-teman sudah belajar berbagai tipe library seperti ```dplyr```, ```readr```, ```ggplot```. library-library tersebut sebenarnya merupakan bagian dari library dengan nama ```tidyverse```. Library tidyverse merupakan kumpulan library-library untuk melakukan proses data science, mulai dari mengimport data hingga melakukan visualisasi. Dengan meload library ```tidyverse``` kita secara otomatis juga mengaktifkan library-library yang ada didalamnya, termasuk ```dplyr```, ```readr```, ```ggplot```. Untuk melihat library apa saja yang termasuk di library tidyverse teman-teman dapat melihatnya di dokumentasi tidyverse. 
+
+Selain library ```tidyverse```, kita juga memerlukan library ```tidymodels``` yang berfungsi untuk membantu kita dalam membuat alur/workflow model machine learning, library ```discrim``` untuk model analisis discriminant, dan library ```naivebayes``` untuk memodelkan dengan algoritma Naive Bayes. Mari kita insall dan load library-library tersebut terlebih dahulu. 
+
+```{r}
+# Install library
+install.packages(c("tidyverse", "tidymodels", "discrim", "naivebayes"))
+```
 
 ```{r}
 # Load library
 library(tidyverse)
 library(tidymodels)
-library(randomForest)
+library(discrim)
+library(naivebayes)
 ```
 
 ## Import Data
+Sebelum memulai mari kita import datanya terlebih dahulu. 
 
 ```{r}
-# Load Data
-df_bm <- read_csv2("data/raw/bank-marketing.csv")
+# Import Data
+df <- read_csv2("data/raw/bank-marketing.csv")
 ```
 
+Setelah diimport, kita dapat melihat seperti apa data kita menggunakan fungsi ```head()``` untuk menampilkan beberapa baris pertama data, atau menggunakan fungsi ```glimpse()```
+
+```{r}
+# Show the first 5 rows
+head(df)
+```
+
+```{r}
+# Show data summary using glimpse()
+glimpse(df)
+```
+Pada umumnya setelah data diimport, tahapan yang dilakukan adalah EDA atau Exploratory Data Analysis, yang bertujuan untuk mencari insight awal terkait data kita. Namun, di praktek kali ini kita akan mengsumsikan bahwa data kita sudah cukup baik untuk dimodelkan, dan kita juga sudah cukup memliki insight terkait data pada saat praktik-praktik sebelumnya.  
+
 ## Split Data
-Sebelum dimodelkan, data harus dibagi menjadi dua yaitu data train untuk membuat model dan data test untuk menguji akurasi model. Umumnya, data dibagi dengan proporsi 70% train dan 30% test.
+Sebelum dimodelkan, data harus dibagi menjadi dua yaitu data train untuk membuat model, dan data test untuk menguji performa model. Umumnya, data dibagi dengan proporsi 70% train dan 30% test.
+
+```{r}
+set.seed(1234)
+```
 
 ```{r}
 # Split Data with 70:30 Proportion
-df_bm_split <- initial_split(df_bm, prop = 0.7)
-df_bm_split
+df_split <- initial_split(df, prop = 0.8)
+df_split
 ```
 
 ```{r}
 # See Training Data
-df_bm_split %>%
+df_split %>%
   training() %>%
   glimpse()
 ```
 
 ## Membut Alur Pemrosesan Data
-Setelah membagi data kedalam training dan testing, kita dapat membuat alur pemrosesan data. Disini menenetukan role masing-masing variable, seperti menentukan variable yang akan diprediksi, dan yang memprediksi.
+Setelah membagi data kedalam training dan testing, kita dapat membuat alur pemrosesan data. Disini menenetukan role masing-masing variable, seperti menentukan variable yang akan diprediksi, dan yang memprediksi. Di alur pemrosesan data ini kita juga dapat menambah proses untuk meningkatkan kualitas data kita seperti mengisi nilai data yang kosong, normalisasi, down sampling, dan sebagainya. 
 
 ```{r}
 # Create Recipe
-df_bm_recipe <- training(df_bm_split) %>%
+df_recipe <- training(df_split) %>%
   recipe(y ~.) %>%
   prep()
 
-df_bm_recipe
+df_recipe
 ```
 
 Untuk melihat bagaimana hasil pemrosesan ini pada data traning kita. Kita dapat menggunakan fungsi ```juice()```.
 
 ```{r}
 # See training data using juice
-df_bm_training <- juice(df_bm_recipe)
-glimpse(df_bm_training)
+df_training <- juice(df_recipe)
+glimpse(df_training)
 ```
-
-Jika sudah sesuai, kita dapat mengaplikasikannya kedalam data training menggunakan fungsi ```bake```.
+Jika sudah sesuai, kita dapat mengaplikasikannya kedalam data testing menggunakan fungsi ```bake```.
 
 ```{r}
 # See the testing data using bake
-df_bm_testing <- df_bm_recipe %>%
-  bake(testing(df_bm_split)) 
+df_testing <- df_recipe %>%
+  bake(testing(df_split)) 
 
-glimpse(df_bm_testing)
+glimpse(df_testing)
+```
+## Menentukan Algoritma
+Tahap selanjutnya adalah menetukan algoritma apa yang akan kita gunakan untuk melakukan prediksi klasifikasi. Di modul ini kita akan menggunakan algoritma naive bayes
+
+```{r}
+# Set the model
+nb_mod <-  naive_Bayes(mode = "classification") %>%
+  set_engine('naivebayes') 
 ```
 
-## Training
-Tahap selanjutnya ada ada melakukan training model, ditahap ini kita juga menetukan algoritma apa yang akan kita gunakan untuk melakukan prediksi klasifikasi. Di modul ini kita akan menggunakan algoritma random forest. 
+## Membuat Workflow
+Jika sudah menentukan alur pemrosesan data, dan algoritma yang akan digunakan, kita dapat menyatukannya kedalam 1 workflow. 
+
 ```{r}
-# Train
-df_bm_rf <-  rand_forest(trees = 100, mode = "classification") %>%
-  set_engine("randomForest") %>%
-  fit(y ~ ., data = df_bm_training)
+# Create Workflow
+workflow <- workflow() %>%
+  add_model(nb_mod) %>%
+  add_recipe(df_recipe)
 ```
 
-## Prediksi ke data Testing
-Selanjutnya, dengan model yang kita buat kita dapat melakukan prediksi ke data testing. 
+## Training dan Prediksi ke data set
+Jika workflow sudah sesuai dan berhasil dibuat, kita dapat langsung melakukan proses training dan melakukan prediksi ke data testing.
+
 ```{r}
+# Train The model
+nb <- fit(workflow, training(df_split))
+
 # Predict
-predict(df_bm_rf, df_bm_testing)
-```
-
-```{r}
-# Predict and Bind
-df_bm_rf %>%
-  predict(df_bm_testing) %>%
-  bind_cols(df_bm_testing) %>%
-  glimpse()
+head(predict(nb, testing(df_split)))
 ```
 
 ##  Mengukur Performa Model
+Tahapan terakhir adalah mengecek seberapa baik model kita dalam melakukan prediksi, dengan membandingkan nilai hasil prediksi model machine learning dengan nilai yang sebenarnya. 
 
-Tahapan terakhir adalah mengecek seberapa baik model kita dalam melakukan prediksi. 
 ```{r}
 # Define metric for evaluation
 multi_metrics <- metric_set(accuracy, sensitivity, recall, f_meas)
 
 # See Performance Evaluation
-df_bm_rf %>%
-  predict(df_bm_testing) %>%
-  bind_cols(df_bm_testing) %>%
+nb %>%
+  predict(df_testing) %>%
+  bind_cols(df_testing) %>%
   multi_metrics(truth = y, estimate = .pred_class)
 ```
+Dapat kita lihat ternyata model kita memiki akurasi yang cukup baik, yaitu diatas 80%. Begitu juga dengan nilai sensitivity dan recall. 
 
-Dapat kita lihat ternyata  Model kita memiki akurasi yang sangat baik, yaitu diatas 90%. 
+##  Mengaplikasikan Model ke Data Baru
+Langkah akhir dari pembuatan sebuah model adalah, menggunakan model tersebut untuk memprediksi data baru. Disini kita memmiliki data 10 nasabah baru yang belum diketahui, apakah pelanggan tersebut akan berlanganan deposito berjangnka atau tidak. Kita akan menggunakan model yang sudah kita buat tadi untuk memprediksinya. 
+
+Data yangv  akan diprediksi terdapat dai directory "data/raw" dengan nama "bank-marketing_new.csv". 
+
+```{r}
+df_new <- read_csv2("data/raw/bank-marketing_new.csv")
+head(df_new)
+```
+
+Dapat kita lihat bahwa belum ada kolom yang menyatakan bahwa pelanggan tersebut berlanggan deposito berjangka atu tidak. Untuk melakukan prediksi kita pat langsung menggunakan fungsi ```predict``` ke data baru kita. 
+
+```{r}
+# Predict and Save the prediction Result
+df_predicted <- predict(nb, df_new) %>%
+  bind_cols(df_new) %>%
+  write_csv("data/predicted/bank-marketing_predicted.csv")
+
+# Show the prediction result
+print(df_predicted)
+```
+dari 10 nasabah baru tadi, ternyata ada 4 nasbah yang diprediksi akan berlangganan deposito berjangka. 
+
+```{r}
+# Who will subscribe?
+df_subscribe <- df_predicted %>%
+  filter(.pred_class == "yes")
+
+print(df_subscribe)
+```
+## Praktek
+Sekarang teman-teman sudah paham teknik-teknik untuk membuat model machine learning. Sama seperti sebelumnya, saatnya kita meangaplikasikan ke kasus baru. Kita akan menggunakan dataset telco customer churn dataset sama seperti modul-modul sebelumnya. 
+
+```{r}
+# Import Customer Churn Dataset
+df_churn <- read_csv("data/raw/customer-churn.csv")
+```
+
+### Soal
+Buatlah model machine learning untuk memprediksi cutomer churn dan lakukan prediksi kepada data baru yaitu data "customer-churn_new.csv" yang ada pada direktori "data/raw". Dari 10 pelanggan baru, berapa yang akan churn?
+
+```{r}
+# Answer
+
+```
+

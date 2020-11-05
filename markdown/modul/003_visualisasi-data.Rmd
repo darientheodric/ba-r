@@ -14,26 +14,25 @@ editor_options:
 knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
-Visualisasi atau data visualization merupakan teknik untuk mempresentasikan data yang terstrukturmaupun tidak dengan grafik atau bagan untuk menampilkan info yang tersembunyi yang ada didalam data. 
+Visualisasi atau data visualization merupakan teknik untuk mempresentasikan data dalam bentuk grafik atau bagan untuk menampilkan info yang tersembunyi yang ada didalam data. 
 
 Di modul kali in kita akan belajar melakukan visualisasi data menggunakan R. Dataset yang akan kita gunakan dalam modul kali ini sama seperti pada modul sebelumnya yaitu dataset Bank Marketing yang tersedia di Kaggle.
 
 ## Import Data
-
-Sama seperti modul sebelumnya, untuk dapat melakukan visualisasi data. Kita harus mengimport datanya terlebih dahulu. 
+Untuk dapat melakukan visualisasi data. Kita harus mengimport datanya terlebih dahulu. 
 
 ```{r}
-# Load Package readr
+# Load library readr
 library(readr)
 
 # Import data bank-marketing.csv from data/raw directory
 df <- read_csv2("data/raw/bank-marketing.csv")
 ```
 
-Setelah kita mengimport datasetnya, kita bisa melihat rangkuman informasi dataset tersebut menggunakan fungsi glimpse dari package ```dplyr``` yang sudah kita pelajari di modul sebelumnya. 
+Setelah kita mengimport datasetnya, kita bisa melihat rangkuman informasi dataset tersebut menggunakan fungsi glimpse dari library ```dplyr``` yang sudah kita pelajari di modul sebelumnya. 
 
 ```{r}
-# Load Package readr
+# Load library readr
 library(dplyr)
 
 # Melihat rangkuman data
@@ -42,90 +41,99 @@ glimpse(df)
 
 ## Visualisasi data menggunakan base R
 
-Pada dasarnya di R kita dapat melakukan visualiasi tanpa package apapun.
+Pada dasarnya di R kita dapat melakukan visualiasi tanpa library apapun.
 
 ### Histogram
 
-Kita dapat melakukan visualisasi histogram untuk melihat distribusi umur pelanggan dengan funsi hist()
+Kita dapat melakukan visualisasi histogram untuk melihat distribusi umur nasabah dengan funsi hist()
 
 ```{r}
 # Visualisasi Histogram
 hist(df$age)
 ```
 
-Sayangnya visualisasi ini menggunakan base R terbatas, dan visualisasinya kurang menarik. Untungnya di R ada sebuah library visualisasi yang cukup terkennal yaitu ggplot2.
+Sayangnya visualisasi ini menggunakan base R terbatas, dan hasil visualisasinya juga kurang menarik. Untungnya di R ada sebuah library visualisasi data yang sangat mumpuni yaitu ```ggplot2```.
 
-## Visualisasi data menggunakan GGplot2
-gglpot2 merupakan Packages untuk visualisasi data yang diciptakan oleh Hadley Wickham. GGplot2 memiliki kelebihannya dalam pembuatan gambar yang elegan dan kompleks. Sebelum itu kita harus package GGplot2 kedalam R environtmen kita. 
+## Visualisasi data menggunakan ggplot2
+ggplot2 merupakan library untuk visualisasi data yang juga diciptakan oleh Hadley Wickham. ```ggplot2``` memiliki kelebihan dalam pembuatan grafik visualisasi data yang elegan dan kompleks. Sebelum itu kita harus menginstall dan memuat library ```ggplot2``` kedalam R environtment kita kita terlebih dahulu.  
 
 ```{r}
-# Load library ggplot2
+# Install library
+install.packages("ggplot2")
+```
+
+```{r}
+# Load library
 library(ggplot2)
 ```
 
 ### Histogram
-
-Kita akan mencoba untuk melakukan visualisasi histrogram dengan variable yang sama dengan ggplot2
+Kita akan mencoba untuk melakukan visualisasi histogram dengan variable yang sama menggunakan ```ggplot2```
 
 ```{r warning=FALSE}
 # Histogram Age
 ggplot(data = df, aes(x = age)) +
-  geom_histogram(colour = "#e9ecef", fill = "#00bfc4", alpha = 0.6)
+  geom_histogram(colour = "#e9ecef", fill = "#00bfc4")
 ```
 
-lebih menarik bukan?
+Jauh lebih menarik bukan? Selain histogram banyak sekali grafik visualisasi lainnya yang dapat dilakukan di ```ggplot2```. Beriku beberapa contohnya. 
 
-Selanjutnya kita akan memvisialisasikan distribusi target variable kita dengan barchart karena target variable kita bertipe kategorik. 
-
+### Barchart
 ```{r}
 # Bar Chart
 ggplot(data = df, aes(x = y, fill = y)) +
   geom_bar()
 ```
 
+### Scatter Plot
 ```{r}
 # Scatter Plot
-ggplot(data = df, aes(x = age, y = balance, colour = y)) +
+ggplot(data = df, aes(x = age, y = balance)) +
   geom_point()
 ```
 
 ```{r}
+# Scatter Plot 2
+ggplot(data = df, aes(x = age, y = balance, colour = y, fill = y)) +
+  geom_point()
+```
+
+### Line Plot
+```{r}
 # line plot
-ggplot(data = df, aes(x = duration, y = balance)) +
+ggplot(data = df, aes(x = campaign, y = duration)) +
   geom_line(colour = "#00bfc4")
 ```
 
+### Box Plot
 ```{r}
 # Box Plot
-ggplot(data = df, aes(x = y, y = duration, fill = y)) +
+ggplot(data = df, aes(x = y, y = age, fill = y)) +
   geom_boxplot()
 ```
 
 ## Kustomisasi Graph
-
-Graph yang divisualisasikan dapat dikustomisasi sehingga lebih menarik dan informatif. Berikut ini beberapa contoh kustomisasi yang dapat kita lakukan. Untuk kustomisasi lengkap bisa melihat dokumentasi ggplot2. 
+Graph yang dihasilkan ggplot juga dapat dikustomisasi sehingga lebih menarik dan informatif. Berikut ini beberapa contoh kustomisasi yang dapat kita lakukan. Untuk kustomisasi secara lengkap teman-teman melihat dokumentasi ggplot2. 
 
 ### Judul dan sub judul
-
 ```{r}
 # Bar Chart
 ggplot(data = df, aes(x = y, fill = y)) +
   geom_bar() +
   labs(
-    title = "Perbandingan Pelanggan Berlangganan Deposito",
+    title = "Perbandingan Nasabah Berlangganan Deposito",
     subtitle = "Bank Marketing Dataset",
     caption = "Sumber Data: Kaggle"
   )
 ```
 
 ### Mengganti Label X dan Y
-
 ```{r}
 # Bar Chart
 ggplot(data = df, aes(x = y, fill = y)) +
   geom_bar() +
   labs(
-    title = "Perbandingan Pelanggan Berlangganan Deposito",
+    title = "Perbandingan Nasabah Berlangganan Deposito",
     subtitle = "Bank Marketing Dataset",
     caption = "Sumber Data: Kaggle"
   ) +
@@ -134,13 +142,12 @@ ggplot(data = df, aes(x = y, fill = y)) +
 ```
 
 ### Mengganti Posisi Legenda
-
 ```{r message=TRUE, warning=TRUE}
 # Bar Chart
 ggplot(data = df, aes(x = y, fill = y)) +
   geom_bar() +
   labs(
-    title = "Perbandingan Pelanggan Berlangganan Deposito",
+    title = "Perbandingan Nasabah Berlangganan Deposito",
     subtitle = "Bank Marketing Dataset",
     caption = "Sumber Data: Kaggle"
   ) +
@@ -150,14 +157,13 @@ ggplot(data = df, aes(x = y, fill = y)) +
 ```
 
 ### Mengganti Tema
-
 ```{r}
 # Bar Chart
 ggplot(data = df, aes(x = y, fill = y)) +
   geom_bar() +
   theme_classic() +
   labs(
-    title = "Perbandingan Pelanggan Berlangganan Deposito",
+    title = "Perbandingan Nasabah Berlangganan Deposito",
     subtitle = "Bank Marketing Dataset",
     caption = "Sumber Data: Kaggle"
   ) +
@@ -169,7 +175,7 @@ ggplot(data = df, aes(x = y, fill = y)) +
 ### Membuat Interaktif dengan Plotly
 
 ```{r message=FALSE, warning=FALSE}
-# Load Package Plotly
+# Load library Plotly
 library(plotly)
 ```
 
@@ -181,3 +187,53 @@ line_chart <- ggplot(data = df, aes(x = duration, y = balance)) +
 ggplotly(line_chart)
 ```
 
+## Praktek
+Sekarang teman-teman sudah paham teknik-teknik melakukan visualisasi data menggunakan library ```ggplo2```. Sama seperti sebelumnya, saatnya kita meangaplikasikan ke kasus baru. Kita akan menggunakan dataset telco customer churn dataset sama seperti modul sebelumnya. 
+
+```{r}
+# Import Customer Churn Dataset
+df_churn <- read_csv("data/raw/customer-churn.csv")
+```
+
+### Soal
+Sama seperti praktek sebelumnya teman-teman merupakan seorang data scientist diperusahaan telekomunikasi seperti yang sudah diceritakan sebelumnya. Teman-teman diminta untuk menjawab pertanyaan yang ajukan manajemen, kali ini dalam bentuk visualisasi data menggunakan library ```ggplot```. 
+
+### Contoh Soal: Visualisasikan banyaknya pelanggan yang churn dan tidak
+```{r}
+# Answer
+ggplot(data = df_churn, aes(x = Churn, fill = Churn)) +
+  geom_bar()
+```
+
+#### Soal 1: Visualisasikan jumlah pelanggan pada masing-masing tipe kontrak
+
+```{r}
+# Answer to Question 1
+
+```
+
+#### Soal 2: Visualisasikan jumlah pelanggan laki-laki dan perempuan
+```{r}
+# Answer to Question 2
+
+```
+
+#### Soal 3: Visualisasikan hubungan tenure dan jumlah tagihan bulanan dan lihat keterkaitannya dengan churn atau tidak
+```{r}
+# Answer to Question 3
+
+```
+
+#### Soal 4: Visualisasikan jumlah pelanggan laki-laki dan perempuan yang churn
+```{r}
+# Answer to Question 4
+
+```
+
+#### Soal 5: Visualisasikan Secara interaktif proporsi pelanggan partner yang churn dan tidak
+Petunjuk: Menggunakan ggplotly
+
+```{r}
+# Answer to Question 5
+
+```

@@ -202,21 +202,22 @@ code span.ot { color: #007020; }
 <div id="content-wrapper">
   <div class="inner clearfix">
     <section id="main-content">
-<p>Data transformation merupakan proses mengubah data dari satu format atau struktur ke format atau struktur lain. Proses transformasi data tidak memiliki standar atau prosedur yang tetap, semua dikembalikan pada kondisi data yang kita miliki dan tujuan transformasi data.</p>
-<p>Pada praktek kali ini kita akan belajar untuk melakukan transformasi data menggunakan package <code>dplyr</code>. Package <code>dplyr</code> ini dikembangkan oleh Hadley Wickham dan Roman Francois yang memberikan beberapa fungsi yang mudah digunakan. Package ini sangat berguna ketika digunakan untuk melakukan analisis dan eksplorasi data. Sebelum dapat digunakan, package dplyr ini perlu kita install dan load terlebih dulu.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Install package dplyr</span></span>
+<p>Data transformation atau transformasi data merupakan proses mengubah data dari satu format/struktur ke format/struktur lain. Proses transformasi data diperlukan pada kondisi dimana format/struktur data yang dimiliki, belum sesuai dengan format/struktur yang ditentukan pada proses analisis data. Proses transformasi data tidak memiliki standar atau prosedur yang tetap, semua dikembalikan pada kondisi data yang kita miliki dan format/struktur akhir yang diinginkan.</p>
+<p>Pada praktek kali ini kita akan belajar untuk melakukan transformasi data menggunakan library <code>dplyr</code>. Library yang dikembangkan oleh Hadley Wickham dan Roman Francois ini memberikan banyak fungsi yang mudah digunakan untuk melakukan transformasi data. Karena tujuannya untuk melakukan transformasi data, library <code>dplyr</code> ini menjadi sangat berguna ketika digunakan untuk melakukan analisis dan eksplorasi data.</p>
+<p>Sebelum dapat digunakan, library <code>dplyr</code> ini perlu kita install dan load terlebih dulu.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Install library</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Load Package</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Load library</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span></code></pre></div>
 <div id="import-data" class="section level2">
 <h2>Import Data</h2>
-<p>Untuk melakukan transformasi data kita harus memiliki data yang akan ditransformasi terlebih dahulu. Dataset yang akan kita gunakan dalam modul kali ini adalah dataset Bank Marketing yang didapatkan dari Kaggle. Dataset Bank Marketing berisikan informasi terkait Marketing Campaign sebuah Bank di Portugis. Informasi lengkap mengenai dataset ini dapat dilihat di <a href="https://www.kaggle.com/henriqueyamahata/bank-marketing">Kaggle</a>.Datasetnya sendiri sudah didownload dan disimpan didalam directory data/raw.</p>
-<p>Untuk memulai, mari kita import datanya terlebih dulu. Karena kita sudah menginstall <code>readr</code> di modul sebelumnya, kita tidak perlu menginstalnya lagi. Cukup meload atau memuat packagenya saja.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Load Package readr</span></span>
+<p>Untuk melakukan transformasi data kita harus memiliki data yang akan ditransformasi terlebih dahulu. Dataset yang akan kita gunakan dalam modul kali ini adalah dataset Bank Marketing yang didapatkan dari Kaggle. Dataset Bank Marketing berisikan informasi terkait Marketing Campaign sebuah Bank di Portugis. Informasi lengkap mengenai dataset ini dapat dilihat di <a href="https://www.kaggle.com/henriqueyamahata/bank-marketing">Kaggle</a>.Datasetnya sendiri sudah didownload dan disimpan didalam directory <code>data/raw</code>.</p>
+<p>Untuk memulai, mari kita import datanya terlebih dulu. Karena kita sudah menginstall <code>readr</code> di modul sebelumnya, kita tidak perlu menginstalnya lagi. Cukup meload atau memuat librarynya saja.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Load library readr</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="kw">library</span>(readr)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Import data bank-marketing.csv from data/raw directory</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a>df &lt;-<span class="st"> </span><span class="kw">read_csv2</span>(<span class="st">&quot;data/raw/bank-marketing.csv&quot;</span>)</span></code></pre></div>
-<p>Sekarang datanya terimport ke dalam environment R. Kita dapat 5 baris pertama data kita dengan menggunakan fungsi `<code>head()</code>.</p>
+<p>Sekarang datanya terimport ke dalam environment R. Kita dapat 5 baris pertama data kita dengan menggunakan fungsi <code>head()</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Show the first 5 rows</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="kw">head</span>(df)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 17
@@ -230,37 +231,16 @@ code span.ot { color: #007020; }
 ## 6    35 mana… married tertiary  no          231 yes     no    unknown     5
 ## # … with 7 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
 ## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;, y &lt;chr&gt;</code></pre>
-<p>Selain melihat 5 baris data kita, kita juga dapat melihat rangkuman data kita menggunakan fungsi <code>glimpse()</code> dari package <code>dplyr</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Show data summary using the glimpse() function</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">glimpse</span>(df)</span></code></pre></div>
-<pre><code>## Rows: 45,211
-## Columns: 17
-## $ age       &lt;dbl&gt; 58, 44, 33, 47, 33, 35, 28, 42, 58, 43, 41, 29, 53, 58, 57,…
-## $ job       &lt;chr&gt; &quot;management&quot;, &quot;technician&quot;, &quot;entrepreneur&quot;, &quot;blue-collar&quot;, …
-## $ marital   &lt;chr&gt; &quot;married&quot;, &quot;single&quot;, &quot;married&quot;, &quot;married&quot;, &quot;single&quot;, &quot;marri…
-## $ education &lt;chr&gt; &quot;tertiary&quot;, &quot;secondary&quot;, &quot;secondary&quot;, &quot;unknown&quot;, &quot;unknown&quot;,…
-## $ default   &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;…
-## $ balance   &lt;dbl&gt; 2143, 29, 2, 1506, 1, 231, 447, 2, 121, 593, 270, 390, 6, 7…
-## $ housing   &lt;chr&gt; &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes…
-## $ loan      &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no…
-## $ contact   &lt;chr&gt; &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unk…
-## $ day       &lt;dbl&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,…
-## $ month     &lt;chr&gt; &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;ma…
-## $ duration  &lt;dbl&gt; 261, 151, 76, 92, 198, 139, 217, 380, 50, 55, 222, 137, 517…
-## $ campaign  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
-## $ pdays     &lt;dbl&gt; -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,…
-## $ previous  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
-## $ poutcome  &lt;chr&gt; &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unk…
-## $ y         &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;,…</code></pre>
 </div>
 <div id="fungsi-umum-pada-dplyr" class="section level2">
 <h2>Fungsi umum pada dplyr</h2>
-<p>Package dplyr menyediakan banyak sekali fungsi yang dapat digunakan untuk melakukan tranformasi data. Di modul ini kita akan belajar fungsi-fungsi umumnya saja.</p>
+<p>Library <code>dplyr</code> menyediakan banyak sekali fungsi yang dapat digunakan untuk melakukan tranformasi data. Di modul ini kita akan belajar beberapa fungsi-fungsi umum dari library <code>dplyr</code></p>
 <div id="glimpse" class="section level3">
 <h3>Glimpse</h3>
-<p>Fungsi yang pertama akan kita pelajari adalah fungsi <code>glimpse()</code>, fungsi ini telah kita gunakan pada saat emilihat informasi data diatas. Fungsi <code>glimpse()</code> memiliki fungsi yang sama seperti <code>str()</code> yaitu memberikan rangkuman tentang keadaan data. Meliputi jumlah observasi atau baris dan jumlah variabel atau kolom. Kemudian memberikan informasi mengenai tipe dari variabel serta menampilkan sedikit informasi mengenai data kita.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Glimpse</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="kw">glimpse</span>(df)</span></code></pre></div>
+<p>Fungsi yang pertama akan kita pelajari adalah fungsi <code>glimpse()</code>. Fungsi <code>glimpse()</code> berfungsi untuk menampilkan rangkuman informasi tentang keadaan data yang kita miliki, mirip seperti fungsi <code>str()</code>.</p>
+<p>Informasi yang ditampilkan meliputi jumlah observasi (Jumlah baris dan jumlah variabel/kolom), tipe variabel, dan beberapa contoh data.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Glimpse</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">glimpse</span>(df)</span></code></pre></div>
 <pre><code>## Rows: 45,211
 ## Columns: 17
 ## $ age       &lt;dbl&gt; 58, 44, 33, 47, 33, 35, 28, 42, 58, 43, 41, 29, 53, 58, 57,…
@@ -283,12 +263,12 @@ code span.ot { color: #007020; }
 </div>
 <div id="select" class="section level3">
 <h3>Select</h3>
-<p>fungsi selanjutnya adalah fungsi select. Fungsi select digunakan untuk mengambil satu atau beberapa variabel tertentu dari sebuah dataframe. Contoh kita akan mengambil variable “age dan”job&quot; atau “age” dan “marital”nya saja.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Select variable &quot;age&quot; and &quot;job&quot;</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>df_select &lt;-<span class="st"> </span><span class="kw">select</span>(df, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;job&quot;</span>))</span>
-<span id="cb11-3"><a href="#cb11-3"></a></span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="kw">head</span>(df_select)</span></code></pre></div>
+<p>Fungsi selanjutnya adalah fungsi <code>select</code>. Fungsi <code>select</code> digunakan untuk mengambil satu atau beberapa variabel tertentu dari sebuah dataframe. Contoh kita akan mengambil variable “age” dan “job”.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Select variable &quot;age&quot; and &quot;job&quot;</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>df_select &lt;-<span class="st"> </span><span class="kw">select</span>(df, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;job&quot;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="kw">head</span>(df_select)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 2
 ##     age job         
 ##   &lt;dbl&gt; &lt;chr&gt;       
@@ -298,11 +278,12 @@ code span.ot { color: #007020; }
 ## 4    47 blue-collar 
 ## 5    33 unknown     
 ## 6    35 management</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Select Variable &quot;age&quot; and &quot;maritial&quot;</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>df_usia_nikah &lt;-<span class="st"> </span><span class="kw">select</span>(df, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;marital&quot;</span>))</span>
-<span id="cb13-3"><a href="#cb13-3"></a></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="kw">head</span>(df_usia_nikah)</span></code></pre></div>
+<p>Contoh lainnya kita juga dapat mengambil variable “age” dan “marital”.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Select Variable &quot;age&quot; and &quot;marital&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>df_usia_nikah &lt;-<span class="st"> </span><span class="kw">select</span>(df, <span class="kw">c</span>(<span class="st">&quot;age&quot;</span>, <span class="st">&quot;marital&quot;</span>))</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="kw">head</span>(df_usia_nikah)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 2
 ##     age marital
 ##   &lt;dbl&gt; &lt;chr&gt;  
@@ -315,12 +296,12 @@ code span.ot { color: #007020; }
 </div>
 <div id="filter" class="section level3">
 <h3>Filter</h3>
-<p>Fungsi filter digunakan untuk menyeleksi dan menampilkan data sesuai dengan ketentuan. Contoh kita akan memfilter data pelanggan yang memiliki pekerjaan sebagai admin, atau memfilter pelanggan yang sudah menikah</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Filter job = Admin</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>df_filter &lt;-<span class="st"> </span><span class="kw">filter</span>(df, job <span class="op">==</span><span class="st"> &quot;admin.&quot;</span>)</span>
-<span id="cb15-3"><a href="#cb15-3"></a></span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="kw">head</span>(df_filter)</span></code></pre></div>
+<p>Fungsi <code>filter()</code> digunakan untuk menyeleksi dan menampilkan data sesuai dengan ketentuan yang diberikan. Contoh kita akan memfilter data pelanggan yang memiliki pekerjaan sebagai admin, atau memfilter pelanggan yang sudah menikah</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Filter job = Admin</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>df_filter &lt;-<span class="st"> </span><span class="kw">filter</span>(df, job <span class="op">==</span><span class="st"> &quot;admin.&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="kw">head</span>(df_filter)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 17
 ##     age job   marital education default balance housing loan  contact   day
 ##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
@@ -332,11 +313,11 @@ code span.ot { color: #007020; }
 ## 6    36 admi… divorc… secondary no          506 yes     no    unknown     5
 ## # … with 7 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
 ## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;, y &lt;chr&gt;</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Filter marital = married</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a>df_married &lt;-<span class="st"> </span><span class="kw">filter</span>(df, marital <span class="op">==</span><span class="st"> &quot;married&quot;</span>)</span>
-<span id="cb17-3"><a href="#cb17-3"></a></span>
-<span id="cb17-4"><a href="#cb17-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb17-5"><a href="#cb17-5"></a><span class="kw">head</span>(df_married)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Filter marital = married</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>df_married &lt;-<span class="st"> </span><span class="kw">filter</span>(df, marital <span class="op">==</span><span class="st"> &quot;married&quot;</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="kw">head</span>(df_married)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 17
 ##     age job   marital education default balance housing loan  contact   day
 ##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
@@ -351,12 +332,12 @@ code span.ot { color: #007020; }
 </div>
 <div id="mutate" class="section level3">
 <h3>Mutate</h3>
-<p>Fungsi mutate dapat digunakan untuk menambahkan variabel baru. Variabel baru tersebut dapat berupa variabel kategorik maupun numerik. Contoh kita akan membuat variable baru dengan yang merupakan rasio usia/jumlah tabungan.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Create new variable</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>df_mutate &lt;-<span class="st"> </span><span class="kw">mutate</span>(df, <span class="dt">balance_ratio =</span> balance <span class="op">/</span><span class="st"> </span>age)</span>
-<span id="cb19-3"><a href="#cb19-3"></a></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="kw">head</span>(df_mutate)</span></code></pre></div>
+<p>Fungsi <code>mutate()</code> dapat digunakan untuk memodifikasi atau menambahkan variabel baru. Variabel baru tersebut dapat berupa variabel kategorik maupun numerik. Contoh kita akan membuat variable baru yang berisikan rasio <code>usia/jumlah saldo tabungan</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Create new variable using muatate()</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>df_mutate &lt;-<span class="st"> </span><span class="kw">mutate</span>(df, <span class="dt">balance_ratio =</span> balance <span class="op">/</span><span class="st"> </span>age)</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="kw">head</span>(df_mutate)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 18
 ##     age job   marital education default balance housing loan  contact   day
 ##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
@@ -371,41 +352,35 @@ code span.ot { color: #007020; }
 </div>
 <div id="sampling" class="section level3">
 <h3>Sampling</h3>
-<p>Fungsi ini digunakan untuk mengambil secara acak pada data. Fungsi sample_n berarti mengambil sampel berdasarkan nilai n yang ditentukan. Contoh kita akan mengambil sample sebanyak 100 dari data.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Take 100 data samples</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>df_sample &lt;-<span class="st"> </span><span class="kw">sample_n</span>(df, <span class="dv">100</span>)</span>
-<span id="cb21-3"><a href="#cb21-3"></a></span>
-<span id="cb21-4"><a href="#cb21-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a><span class="kw">head</span>(df_sample)</span></code></pre></div>
+<p>Fungsi ini digunakan untuk mengambil sample secara acak pada data. Fungsi <code>sample_n()</code> berarti mengambil sampel berdasarkan nilai n yang ditentukan. Contoh kita akan mengambil sample sebanyak 100 dari data.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Take 100 data samples</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>df_sample &lt;-<span class="st"> </span><span class="kw">sample_n</span>(df, <span class="dv">100</span>)</span>
+<span id="cb19-3"><a href="#cb19-3"></a></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="kw">head</span>(df_sample)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 17
 ##     age job   marital education default balance housing loan  contact   day
 ##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
-## 1    37 self… married primary   no           67 no      no    cellul…    31
-## 2    34 mana… married tertiary  no          273 yes     no    cellul…    20
-## 3    24 tech… married secondary no          556 yes     no    cellul…     6
-## 4    32 serv… single  secondary no          808 yes     no    cellul…    20
-## 5    23 serv… single  secondary no          870 no      no    cellul…     6
-## 6    47 mana… divorc… tertiary  no          428 yes     no    cellul…    18
+## 1    34 admi… single  tertiary  no         3092 no      no    cellul…    19
+## 2    28 mana… single  tertiary  no            1 no      no    cellul…    24
+## 3    53 reti… married primary   no            0 no      no    cellul…    30
+## 4    49 mana… married tertiary  no            0 no      no    cellul…    19
+## 5    47 mana… single  tertiary  no          334 yes     no    cellul…    28
+## 6    37 blue… single  secondary no         2235 yes     no    cellul…    20
 ## # … with 7 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
 ## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;, y &lt;chr&gt;</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Show data dimensions</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="kw">dim</span>(df_sample)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Show data dimensions</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="kw">dim</span>(df_sample)</span></code></pre></div>
 <pre><code>## [1] 100  17</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># Take 200 data samples</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>df_<span class="dv">200</span> &lt;-<span class="st"> </span><span class="kw">sample_n</span>(df, <span class="dv">200</span>)</span>
-<span id="cb25-3"><a href="#cb25-3"></a></span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="kw">dim</span>(df_<span class="dv">200</span>)</span></code></pre></div>
-<pre><code>## [1] 200  17</code></pre>
 </div>
 <div id="summarize" class="section level3">
 <h3>Summarize</h3>
-<p>Fungsi summarise digunakan untuk meringkas beberapa nilai data menjadi satu nilai. Fungsi ini akan menjadi sangat berguna apabila digabungkan fungsi lain dalam dplyr. na.rm = TRUE memberikan hasil fungsi dengan meniadakan nilai missing. Fungsi di dalam summarise yang dapat digunakan seperti mean(), median(), sd(), IQR(), mad(), min(), max(), quantile(), first(), last(), nth(), n(), n_distinct(), any(), dan all(). Contoh kita akan menghitung rata-rata usia pelanggan</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># Calcuate the mean of variable &quot;age&quot;</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a>df_summarise &lt;-<span class="st"> </span><span class="kw">summarise</span>(df, <span class="kw">mean</span>(age))</span>
-<span id="cb27-3"><a href="#cb27-3"></a></span>
-<span id="cb27-4"><a href="#cb27-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb27-5"><a href="#cb27-5"></a><span class="kw">print</span>(df_summarise)</span></code></pre></div>
+<p>Fungsi <code>summarise()</code> digunakan untuk meringkas beberapa nilai data menjadi satu nilai. Fungsi ini akan menjadi sangat berguna apabila digabungkan fungsi lain dalam <code>dplyr</code>. Fungsi di dalam summarise yang dapat digunakan seperti <code>mean()</code>, <code>median()</code>, <code>sd()</code>, <code>min()</code>, <code>max()</code>, <code>quantile()</code>, <code>first()</code>, <code>last()</code>. Contoh kita akan menghitung rata-rata usia pelanggan.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Calculate the mean of variable &quot;age&quot;</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>df_summarise &lt;-<span class="st"> </span><span class="kw">summarise</span>(df, <span class="kw">mean</span>(age))</span>
+<span id="cb23-3"><a href="#cb23-3"></a></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="kw">print</span>(df_summarise)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   `mean(age)`
 ##         &lt;dbl&gt;
@@ -413,12 +388,12 @@ code span.ot { color: #007020; }
 </div>
 <div id="arrange" class="section level3">
 <h3>Arrange</h3>
-<p>Fungsi arrange berguna untuk mengurutkan data berdasarkan variabel. Variabel yang menjadi acuan untuk diurutkan dapat lebih dari satu dan dapat ditentukan apakah dari besar ke kecil atau dari kecil ke besar. Contoh kita akan mengurutkan data kita berdasarkan usia.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># Sort data by &quot;age&quot;</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a>df_arrange &lt;-<span class="st"> </span><span class="kw">arrange</span>(df, age)</span>
-<span id="cb29-3"><a href="#cb29-3"></a></span>
-<span id="cb29-4"><a href="#cb29-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb29-5"><a href="#cb29-5"></a><span class="kw">head</span>(df_arrange)</span></code></pre></div>
+<p>Fungsi <code>arrange()</code> berguna untuk mengurutkan data berdasarkan nilai. Variabel yang menjadi acuan untuk diurutkan dapat lebih dari satu dan dapat ditentukan apakah dari besar ke kecil atau dari kecil ke besar. Contoh kita akan mengurutkan data kita berdasarkan usia.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># Sort data by &quot;age&quot;</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>df_arrange &lt;-<span class="st"> </span><span class="kw">arrange</span>(df, age)</span>
+<span id="cb25-3"><a href="#cb25-3"></a></span>
+<span id="cb25-4"><a href="#cb25-4"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a><span class="kw">head</span>(df_arrange)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 17
 ##     age job   marital education default balance housing loan  contact   day
 ##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
@@ -430,63 +405,84 @@ code span.ot { color: #007020; }
 ## 6    18 stud… single  unknown   no            3 no      no    cellul…    25
 ## # … with 7 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
 ## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;, y &lt;chr&gt;</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Sort data by &quot;balance&quot;</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a>df_balance &lt;-<span class="st"> </span><span class="kw">arrange</span>(df, balance)</span>
-<span id="cb31-3"><a href="#cb31-3"></a></span>
-<span id="cb31-4"><a href="#cb31-4"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb31-5"><a href="#cb31-5"></a><span class="kw">head</span>(df_balance)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 17
-##     age job   marital education default balance housing loan  contact   day
-##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
-## 1    26 blue… single  secondary yes       -8019 no      yes   cellul…     7
-## 2    49 mana… married tertiary  yes       -6847 no      yes   cellul…    21
-## 3    60 mana… divorc… tertiary  no        -4057 yes     no    cellul…    18
-## 4    43 mana… married tertiary  yes       -3372 yes     no    unknown    29
-## 5    57 self… married tertiary  yes       -3313 yes     yes   unknown     9
-## 6    39 self… married tertiary  no        -3058 yes     yes   cellul…    17
-## # … with 7 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
-## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;, y &lt;chr&gt;</code></pre>
 </div>
 <div id="pipe" class="section level3">
 <h3>Pipe</h3>
-<p>Fungsi ini menggunakan %&gt;% yang berguna untuk fungsi berantai atau terus menerus. Sehingga dapat menuliskan lebih dari satu fungsi sekaligus tanpa harus menyimpannya terlebih dahulu. Contoh kita akan mengambil sample sebanyak 100, lalu di filter yang usianya dibawah 30, dan diurutkan berdasarkan jumlah saldo tabungan yang paling besar.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># Create pipe to to find customers under the age of 30 with the largest balance</span></span>
-<span id="cb33-2"><a href="#cb33-2"></a>df_pipe &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
-<span id="cb33-3"><a href="#cb33-3"></a><span class="st">  </span><span class="kw">sample_n</span>(<span class="dv">100</span>) <span class="op">%&gt;%</span></span>
-<span id="cb33-4"><a href="#cb33-4"></a><span class="st">  </span><span class="kw">filter</span>(age <span class="op">&lt;</span><span class="st"> </span><span class="dv">30</span>) <span class="op">%&gt;%</span></span>
-<span id="cb33-5"><a href="#cb33-5"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(balance))</span>
-<span id="cb33-6"><a href="#cb33-6"></a></span>
-<span id="cb33-7"><a href="#cb33-7"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb33-8"><a href="#cb33-8"></a><span class="kw">head</span>(df_pipe)</span></code></pre></div>
+<p>Fungsi ini menggunakan notasi <code>%&gt;%</code> yang berguna untuk membuat fungsi berantai atau fungsi terus menerus. Fungsi pipe memungkinkan kita menuliskan lebih dari satu fungsi sekaligus tanpa harus menyimpannya terlebih dahulu. Contoh kita akan mencari nilai rata-rata saldo tabungan dari pelanggan yang belum menikah.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># Create pipe to to find customers under the age of 30 with the largest balance</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>df_pipe &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="st">  </span><span class="kw">sample_n</span>(<span class="dv">100</span>) <span class="op">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="st">  </span><span class="kw">filter</span>(age <span class="op">&lt;</span><span class="st"> </span><span class="dv">30</span>) <span class="op">%&gt;%</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(balance))</span>
+<span id="cb27-6"><a href="#cb27-6"></a></span>
+<span id="cb27-7"><a href="#cb27-7"></a><span class="co"># Show the first 5 rows</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="kw">head</span>(df_pipe)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 17
 ##     age job   marital education default balance housing loan  contact   day
 ##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
-## 1    27 tech… single  secondary no         3933 no      no    cellul…    28
-## 2    25 mana… single  tertiary  no         1270 yes     no    unknown    13
-## 3    25 tech… married tertiary  no          839 yes     no    cellul…    18
-## 4    26 blue… single  secondary no          834 no      no    cellul…    26
-## 5    24 blue… single  secondary no          476 yes     no    unknown     4
-## 6    28 stud… single  secondary no          459 no      no    cellul…    16
+## 1    29 unem… single  primary   no         1374 no      no    cellul…    17
+## 2    27 stud… single  secondary no          980 no      no    cellul…    29
+## 3    29 self… single  tertiary  no          805 no      no    cellul…     1
+## 4    28 tech… single  secondary no          335 yes     no    cellul…    20
+## 5    26 stud… single  tertiary  no          255 no      no    cellul…    26
+## 6    27 admi… single  secondary no          192 no      no    teleph…    28
 ## # … with 7 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
 ## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;, y &lt;chr&gt;</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Create pipe to find the highest balance of unmarried / single customers </span></span>
-<span id="cb35-2"><a href="#cb35-2"></a>df_balance_single &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
-<span id="cb35-3"><a href="#cb35-3"></a><span class="st">  </span><span class="kw">filter</span>(marital <span class="op">==</span><span class="st"> &quot;single&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb35-4"><a href="#cb35-4"></a><span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(balance))</span>
-<span id="cb35-5"><a href="#cb35-5"></a></span>
-<span id="cb35-6"><a href="#cb35-6"></a><span class="co"># Show the first 5 rows</span></span>
-<span id="cb35-7"><a href="#cb35-7"></a><span class="kw">head</span>(df_balance_single)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 17
-##     age job   marital education default balance housing loan  contact   day
-##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
-## 1    51 mana… single  tertiary  no       102127 no      no    cellul…     3
-## 2    32 entr… single  tertiary  no        59649 no      no    cellul…     1
-## 3    43 admi… single  secondary no        56831 no      no    unknown    15
-## 4    38 admi… single  tertiary  no        45789 no      no    teleph…    21
-## 5    39 tech… single  unknown   no        45248 yes     no    unknown     6
-## 6    31 mana… single  tertiary  no        44128 no      no    cellul…    21
-## # … with 7 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
-## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;, y &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div id="praktek" class="section level2">
+<h2>Praktek</h2>
+<p>Sekarang kamu sudah paham teknik-teknik melakukan transformasi data menggunakan library <code>dplyr</code>. Sekarang saatnya kita meangaplikasikan ke kasus baru. Kita akan menggunakan dataset telco customer churn dataset yang juga tersedia di Kaggle.</p>
+<div id="tentang-telco-customer-churn-datataset" class="section level3">
+<h3>Tentang Telco Customer Churn Datataset</h3>
+<p>Dataset Telco customer churn berisikan informasi __</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># Import Customer Churn Dataset</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a>df_churn &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/raw/customer-churn.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_character(),
+##   SeniorCitizen = col_double(),
+##   tenure = col_double(),
+##   MonthlyCharges = col_double(),
+##   TotalCharges = col_double()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+</div>
+<div id="soal" class="section level3">
+<h3>Soal</h3>
+<p>Di praktek ini kamu akan menjadi seorang data scientist di perusahaan telekomunikasi tersebut dan bertugas untuk menjawab pertanyaan-pertanyaan yang ajukan oleh manajemen berdasarkan data yang diberikan menggunakan library <code>dplyr</code>.</p>
+<div id="contoh-soal-berapa-banyak-jumlah-pelanggan-yang-churn" class="section level4">
+<h4>Contoh Soal: Berapa banyak jumlah pelanggan yang churn?</h4>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Number of Churn customers</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>df_churn <span class="op">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a><span class="st">  </span><span class="kw">filter</span>(Churn <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a><span class="st">  </span><span class="kw">count</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##       n
+##   &lt;int&gt;
+## 1  1869</code></pre>
+</div>
+<div id="soal-1-berapa-banyak-pelanggan-yang-tidak-churn" class="section level4">
+<h4>Soal 1: Berapa banyak pelanggan yang tidak churn?</h4>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># Answer to Question 1</span></span></code></pre></div>
+</div>
+<div id="soal-2-carilah-5-pelanggan-yang-memiliki-jumlah-tagihan-tertinggi" class="section level4">
+<h4>Soal 2: Carilah 5 pelanggan yang memiliki jumlah tagihan tertinggi?</h4>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co"># Answer to Question 2</span></span></code></pre></div>
+</div>
+<div id="soal-3-carilah-daftar-pelanggan-yang-churn-dibawah-3-bulan-berlangganan" class="section level4">
+<h4>Soal 3: Carilah daftar pelanggan yang churn dibawah 3 bulan berlangganan</h4>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Answer to Question 3</span></span></code></pre></div>
+</div>
+<div id="soal-4-carilah-daftar-pelanggan-yang-berlangganan-layanan-telepon" class="section level4">
+<h4>Soal 4: Carilah daftar pelanggan yang berlangganan layanan telepon</h4>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co"># Answer to Question 4</span></span></code></pre></div>
+</div>
+<div id="soal-5-carilah-rata-rata-tagihan-bulanan-pelanggan-yang-churn-dan-tidak" class="section level4">
+<h4>Soal 5: Carilah rata-rata tagihan bulanan pelanggan yang churn dan tidak</h4>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co"># Answer to Question 5</span></span></code></pre></div>
+</div>
 </div>
 </div>
     </section>
