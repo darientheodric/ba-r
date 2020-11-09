@@ -13,12 +13,12 @@ editor_options:
 knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
-Di praktek kali ini kita akan belajar membuat model machine learning untuk memprediksi apakah seorang nasabah akan berlangganan Deposito Berjangka (Term Deposit) menggunakan Bank Marketing Dataset seperti yang sudah kita gunakan di modul-modul sebelumnya. Seperti yang sudah dijelaskan sebelumnya, bahwa dataset bank marketing ini berisikan informasi terkait Marketing Campaign sebuah Bank di Portugis. Marketing Campaign ini bertujuan untuk menawarkan deposito berjangka (Deposito Jangka Panjang) kepada para nasabah. 
+Di praktek kali ini kita akan belajar membuat model machine learning untuk memprediksi apakah seorang nasabah akan berlangganan Deposito Berjangka (Term Deposit) menggunakan Bank Marketing Dataset seperti yang sudah kita gunakan di modul-modul sebelumnya. Dataset bank marketing ini berisi informasi terkait Marketing Campaign sebuah Bank di Portugis. Tujuan dari Marketing Campaign ini yaitu untuk menawarkan deposito berjangka (Deposito Jangka Panjang) kepada para nasabah. 
 
 ## Load Package
-Pada praktek-praktek sebelumnya, teman-teman sudah belajar berbagai tipe Package seperti ```dplyr```, ```readr```, ```ggplot```. Package-Package tersebut sebenarnya merupakan bagian dari Package dengan nama ```tidyverse```. Package tidyverse merupakan kumpulan Package-Package untuk melakukan proses data science, mulai dari mengimport data hingga melakukan visualisasi. Dengan meload Package ```tidyverse``` kita secara otomatis juga mengaktifkan Package-Package yang ada didalamnya, termasuk ```dplyr```, ```readr```, ```ggplot```. Untuk melihat Package apa saja yang termasuk di Package tidyverse teman-teman dapat melihatnya di dokumentasi tidyverse. 
+Pada praktik-praktik sebelumnya, teman-teman sudah belajar berbagai Packages seperti ```dplyr```, ```readr```, ```ggplot```. Package-Package tersebut merupakan bagian dari Package ```tidyverse```. Package tidyverse ini merupakan sekumpulan Package-Package untuk melakukan proses data science, mulai dari mengimport data hingga melakukan visualisasi. Dengan me-load Package ```tidyverse``` kita secara otomatis juga akan mengaktifkan Package-Package yang ada didalamnya, termasuk ```dplyr```, ```readr```, ```ggplot```. Untuk melihat Package apa saja yang termasuk di Package tidyverse, teman-teman dapat melihatnya di dokumentasi tidyverse. 
 
-Selain Package ```tidyverse```, kita juga memerlukan Package ```tidymodels``` yang berfungsi untuk membantu kita dalam membuat alur/workflow model machine learning, Package ```discrim``` untuk model analisis discriminant, dan Package ```naivebayes``` untuk memodelkan dengan algoritma Naive Bayes. Mari kita insall dan load Package-Package tersebut terlebih dahulu. 
+Selain Package ```tidyverse```, kita juga memerlukan Package ```tidymodels``` untuk membantu membuat alur/workflow model machine learning, Package ```discrim``` untuk model analisis discriminant, dan Package ```naivebayes``` untuk membentuk model dengan algoritma Naive Bayes. Mari kita install dan load Package-Package tersebut terlebih dahulu. 
 
 ```{r}
 # Install package
@@ -34,14 +34,14 @@ library(naivebayes)
 ```
 
 ## Import Data
-Sebelum memulai mari kita import datanya terlebih dahulu. 
+Sebelum memulai, mari kita import datanya terlebih dahulu. 
 
 ```{r}
 # Import Data
 df <- read_csv2("data/raw/bank-marketing.csv")
 ```
 
-Setelah diimport, kita dapat melihat seperti apa data kita menggunakan fungsi ```head()``` untuk menampilkan beberapa baris pertama data, atau menggunakan fungsi ```glimpse()```
+Setelah diimport, kita dapat melihat beberapa data pertama menggunakan fungsi ```head()``` , atau menggunakan fungsi ```glimpse()```
 
 ```{r}
 # Meampilkan 5 baris pertama data
@@ -52,10 +52,11 @@ head(df)
 # menampilkan rangkuman data menggunakan fungsi glimpse()
 glimpse(df)
 ```
-Pada umumnya setelah data diimport, tahapan yang dilakukan adalah EDA atau Exploratory Data Analysis, yang bertujuan untuk mencari insight awal terkait data kita. Namun, di praktek kali ini kita akan mengsumsikan bahwa data kita sudah cukup baik untuk dimodelkan, dan kita juga sudah cukup memliki insight terkait data pada saat praktik-praktik sebelumnya.  
+
+Pada umumnya, setelah data diimport, tahapan selanjutnya yaitu EDA atau Exploratory Data Analysis. EDA bertujuan untuk mencari insight awal terkait data yang kita miliki. Namun, di praktik kali ini kita mengsumsikan bahwa data yang kita miliki sudah cukup baik untuk dimodelkan, dan kita sudah memahami data tersebut pada saat praktik-praktik sebelumnya.  
 
 ## Split Data
-Sebelum dimodelkan, data harus dibagi menjadi dua yaitu data train untuk membuat model, dan data test untuk menguji performa model. Umumnya, data dibagi dengan proporsi 70% train dan 30% test.
+Sebelum dimodelkan, data harus dibagi menjadi dua yaitu data train untuk membuat model, dan data test untuk menguji performa model. Umumnya, data dibagi dengan proporsi: 70% train dan 30% test.
 
 ```{r}
 # Set Seed
@@ -76,7 +77,7 @@ df_split %>%
 ```
 
 ## Membut Alur Pemrosesan Data
-Setelah membagi data kedalam training dan testing, kita dapat membuat alur pemrosesan data. Disini menenetukan role masing-masing variable, seperti menentukan variable yang akan diprediksi, dan yang memprediksi. Di alur pemrosesan data ini kita juga dapat menambah proses untuk meningkatkan kualitas data kita seperti mengisi nilai data yang kosong, normalisasi, down sampling, dan sebagainya. 
+Setelah membagi data menjadi data training dan data testing, kita dapat mulai membuat alur pemrosesan data. Disini, kita akan menenetukan peran masing-masing variable, meliputi peran sebagai target yang diprediksi, dan yang berperan sebagai prediktor. Pada pemrosesan data ini kita juga dapat menambah proses lainnya untuk meningkatkan kualitas data seperti: mengisi nilai data yang kosong, normalisasi, down sampling, dan sebagainya. 
 
 ```{r}
 # Membuat Recipe
@@ -87,14 +88,15 @@ df_recipe <- training(df_split) %>%
 df_recipe
 ```
 
-Untuk melihat bagaimana hasil pemrosesan ini pada data traning kita. Kita dapat menggunakan fungsi ```juice()```.
+Untuk melihat hasil pemrosesan pada data traning, kita dapat menggunakan fungsi ```juice()```.
 
 ```{r}
 # Mererapkan ke data training 
 df_training <- juice(df_recipe)
 glimpse(df_training)
 ```
-Jika sudah sesuai, kita dapat menerapkan kedalam data testing menggunakan fungsi ```bake```.
+
+Jika sudah sesuai, kita dapat menerapkan proses tersebut pada data testing menggunakan fungsi ```bake```.
 
 ```{r}
 # Menerapkan ke data testing
@@ -103,8 +105,9 @@ df_testing <- df_recipe %>%
 
 glimpse(df_testing)
 ```
+
 ## Menentukan Algoritma
-Tahap selanjutnya adalah menetukan algoritma apa yang akan kita gunakan untuk melakukan prediksi klasifikasi. Di modul ini kita akan menggunakan algoritma naive bayes
+Tahap selanjutnya adalah menetukan algoritma apa yang akan kita gunakan untuk melakukan prediksi klasifikasi. Di modul ini, kita akan menggunakan algoritma naive bayes.
 
 ```{r}
 # Menset model
@@ -113,7 +116,7 @@ nb_mod <-  naive_Bayes(mode = "classification") %>%
 ```
 
 ## Membuat Workflow
-Jika sudah menentukan alur pemrosesan data, dan algoritma yang akan digunakan, kita dapat menyatukannya kedalam 1 workflow. 
+Jika sudah menentukan alur pemrosesan data dan algoritma yang akan digunakan, kita dapat menyatukannya menjadi 1 workflow. 
 
 ```{r}
 # Membuat Workflow
@@ -123,7 +126,7 @@ workflow <- workflow() %>%
 ```
 
 ## Training dan Prediksi ke data set
-Jika workflow sudah sesuai dan berhasil dibuat, kita dapat langsung melakukan proses training dan melakukan prediksi ke data testing.
+Jika workflow sudah sesuai dan berhasil dibuat, kita dapat langsung melakukan proses training dan melakukan prediksi pada data testing.
 
 ```{r}
 # Training Model
@@ -134,7 +137,7 @@ head(predict(nb, testing(df_split)))
 ```
 
 ##  Mengukur Performa Model
-Tahapan terakhir adalah mengecek seberapa baik model kita dalam melakukan prediksi, dengan membandingkan nilai hasil prediksi model machine learning dengan nilai yang sebenarnya. 
+Tahapan terakhir yang dilakukan yaitu melakukan penilaian model. Penilaian ini digunakan untuk mengukur seberapa baik model kita dalam memprediksi dengan membandingkan nilai hasil prediksi dengan nilai yang sebenarnya. 
 
 ```{r}
 # Menentukan metrik evaluasi untuk mengukur performa model
@@ -147,12 +150,12 @@ nb %>%
   multi_metrics(truth = y, estimate = .pred_class)
 ```
 
-Dapat kita lihat ternyata model kita memiki akurasi yang cukup baik, yaitu diatas 80%. Begitu juga dengan nilai sensitivity dan recall. 
+Ternyata, model yang kita bangun memiki akurasi yang cukup baik, yaitu diatas 80%. Begitu juga dengan nilai sensitivity dan recall. 
 
 ##  Mengaplikasikan Model ke Data Baru
-Langkah akhir dari pembuatan sebuah model adalah, menggunakan model tersebut untuk memprediksi data baru. Disini kita memmiliki data 10 nasabah baru yang belum diketahui, apakah pelanggan tersebut akan berlanganan deposito berjangnka atau tidak. Kita akan menggunakan model yang sudah kita buat tadi untuk memprediksinya. 
+Langkah akhir dari pembuatan sebuah model yaitu menggunakan model yang telah dibentuk untuk memprediksi data baru. Pada modul ini, kita memiliki 10 data nasabah baru yang belum diketahui apakah pelanggan tersebut akan memilih untuk berlanganan deposito berjangka atau tidak. Kita akan menggunakan model yang sudah kita buat untuk memprediksinya. 
 
-Data yangv  akan diprediksi terdapat dai directory "data/raw" dengan nama "bank-marketing_new.csv". 
+Data yang akan diprediksi terletak pada directory "data/raw" dengan nama "bank-marketing_new.csv". 
 
 ```{r}
 # Import data baru
@@ -160,7 +163,7 @@ df_new <- read_csv2("data/raw/bank-marketing_new.csv")
 head(df_new)
 ```
 
-Dapat kita lihat bahwa belum ada kolom yang menyatakan bahwa pelanggan tersebut berlanggan deposito berjangka atu tidak. Untuk melakukan prediksi kita pat langsung menggunakan fungsi ```predict``` ke data baru kita. 
+Dapat kita lihat bahwa belum ada kolom yang menyatakan bahwa pelanggan tersebut berlanggan deposito berjangka atu tidak. Untuk melakukan prediksi kita dapat langsung menggunakan fungsi ```predict``` ke data baru kita. 
 
 ```{r}
 # Melakukan prediksi dan menyimpan nilai hasil prediksi
@@ -171,8 +174,8 @@ df_predicted <- predict(nb, df_new) %>%
 # Menampilkan hasil prediksi
 print(df_predicted)
 ```
-d
-ari 10 nasabah baru tadi, ternyata ada 4 nasbah yang diprediksi akan berlangganan deposito berjangka. 
+
+dari 10 nasabah baru, ternyata ada 4 orang nasbah yang diprediksi akan berlangganan deposito berjangka, sedangkan 6 lainnya diprediksi tidak akan berlangganan deposito berjangka. 
 
 ```{r}
 # Siapa yang akan berlangganan
@@ -182,8 +185,8 @@ df_subscribe <- df_predicted %>%
 print(df_subscribe)
 ```
 
-## Praktek
-Sekarang teman-teman sudah paham teknik-teknik untuk membuat model machine learning. Sama seperti sebelumnya, saatnya kita meangaplikasikan ke kasus baru. Kita akan menggunakan dataset telco customer churn dataset sama seperti modul-modul sebelumnya. 
+## Praktik
+Teman-teman sudah memahami teknik-teknik dalam proses pembuatan model machine learning. Sama seperti sebelumnya, saatnya kita meangaplikasikan teknik tersebut pada kasus yang baru. Kita akan menggunakan dataset telco customer churn yang sama seperti modul-modul sebelumnya. 
 
 ```{r}
 # Import Customer Churn Dataset
@@ -191,7 +194,9 @@ df_churn <- read_csv("data/raw/customer-churn.csv")
 ```
 
 ### Soal
-Buatlah model machine learning untuk memprediksi cutomer churn dan lakukan prediksi kepada data baru yaitu data "customer-churn_new.csv" yang ada pada direktori "data/raw". Dari 10 pelanggan baru, berapa yang akan churn?
+Sebagai seorang data scientist di perusahaan telekomunikasi tersebut, kita diminta oleh management untuk membuat model machine learning untuk memprediksi cutomer churn dan kemudian melakukan prediksi pada data customer baru yang terdapat di dalam file "customer-churn_new.csv" pada direktori "data/raw".
+
+Dari 10 pelanggan baru, berapa pelanggankah yang diprediksi akan churn?
 
 ```{r}
 # Jawaban

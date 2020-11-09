@@ -14,11 +14,11 @@ editor_options:
 knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
-Data transformation atau transformasi data merupakan proses mengubah data dari satu format/struktur ke format/struktur lain. Proses transformasi data diperlukan pada kondisi dimana format/struktur data yang dimiliki, belum sesuai dengan format/struktur yang ditentukan pada proses analisis data. Proses transformasi data tidak memiliki standar atau prosedur yang tetap, semua dikembalikan pada kondisi data yang kita miliki dan format/struktur akhir yang diinginkan.  
+Data transformation atau transformasi data merupakan proses mengubah data dari satu format/struktur ke format/struktur lain. Proses transformasi data diperlukan pada kondisi dimana format/struktur data yang dimiliki belum sesuai dengan format/struktur yang dibutuhkan dalam proses analisis data. Proses transformasi data tidak memiliki standar atau prosedur yang tetap, seluruh tahapan dilakukan sesuai dengan kondisi data yang kita miliki dan format/struktur data akhir yang diinginkan.  
 
-Pada praktek kali ini kita akan belajar untuk melakukan transformasi data menggunakan Package  ```dplyr```.  Package yang dikembangkan oleh Hadley Wickham dan Roman Francois ini memberikan banyak fungsi yang mudah digunakan untuk melakukan transformasi data. Karena tujuannya untuk melakukan transformasi data, Package ```dplyr``` ini menjadi sangat berguna ketika digunakan untuk melakukan analisis dan eksplorasi data. 
+Pada praktek kali ini kita akan belajar untuk melakukan transformasi data menggunakan Package  ```dplyr```.  Package yang dikembangkan oleh Hadley Wickham dan Roman Francois ini menyediakan banyak fungsi yang mudah digunakan untuk melakukan transformasi data. Karena tujuannya untuk melakukan transformasi data, Package ```dplyr``` ini menjadi sangat berguna pda tahap analisis dan eksplorasi data. 
 
-Sebelum dapat digunakan, Package ```dplyr``` ini perlu kita install dan load terlebih dulu.
+Sebelum dapat digunakan, Package ```dplyr``` harus kita install dan load terlebih dulu.
 
 ```{r eval=FALSE, include=TRUE}
 # Install package
@@ -32,9 +32,9 @@ library("dplyr")
 
 ## Import Data
 
-Untuk melakukan transformasi data kita harus memiliki data yang akan ditransformasi terlebih dahulu. Dataset yang akan kita gunakan di modul kali ini adalah dataset Bank Marketing yang didapatkan dari Kaggle. Dataset Bank Marketing berisikan informasi terkait Marketing Campaign sebuah Bank di Portugis. Marketing Campaign ini bertujuan untuk menawarakan deposito berjangka (Term Deposit) kepada para nasabah. Informasi lengkap mengenai dataset ini dapat dilihat di [Kaggle](https://www.kaggle.com/henriqueyamahata/bank-marketing). Datasetnya sendiri sudah didownload dan disimpan didalam directory ```data/raw```. 
+Untuk melakukan transformasi data, kita harus memiliki data yang akan ditransformasi. Dataset yang akan kita gunakan di modul kali ini yaitu dataset Bank Marketing yang didapatkan dari Kaggle. Dataset Bank Marketing berisi informasi terkait Marketing Campaign sebuah Bank di Portugis. Tujuan dari Marketing Campaign ini yaitu untuk menawarakan deposito berjangka (Term Deposit) kepada para nasabah. Informasi lengkap mengenai dataset ini dapat dilihat melalui [Kaggle](https://www.kaggle.com/henriqueyamahata/bank-marketing). Para modul ini, dataset tersebut sudah didownload dan disimpan pada directory ```data/raw```. 
 
-Untuk memulai, mari kita import datanya terlebih dulu. Karena kita sudah menginstall ```readr``` di modul sebelumnya, kita tidak perlu menginstalnya lagi. Cukup meload atau memuat Packagenya saja. 
+Untuk memulai, mari kita import datanya terlebih dulu. Karena kita sudah menginstall ```readr``` di modul sebelumnya, kita tidak perlu menginstalnya kembali. Dengan demikian, kita cukup me-load/memuat packagenya. 
 
 ```{r}
 # Load package readr
@@ -46,7 +46,7 @@ library(readr)
 df <- read_csv2("data/raw/bank-marketing.csv")
 ```
 
-Sekarang datanya sudah terimport ke dalam environment R. Kita dapat 5 baris pertama data kita dengan menggunakan fungsi ```head()```.
+Pada tahap ini, data yang kita inginkan sudah ter-import dalam environment R. Kita dapat melihat 5 baris pertama data kita dengan menggunakan fungsi ```head()```.
 
 ```{r}
 # Meampilkan 5 baris pertama data
@@ -55,7 +55,7 @@ head(df)
 
 ## Fungsi umum pada dplyr
 
-Package ```dplyr``` menyediakan banyak sekali fungsi yang dapat digunakan untuk melakukan tranformasi data. Di modul ini kita akan belajar beberapa fungsi-fungsi umum dari Package ```dplyr```
+Package ```dplyr``` menyediakan banyak fungsi yang dapat digunakan untuk melakukan tranformasi data. Di modul ini kita akan belajar beberapa fungsi-fungsi umum dari Package ```dplyr```
 
 ### Glimpse
 Fungsi yang pertama akan kita pelajari adalah fungsi ```glimpse()```. Fungsi ```glimpse()``` berfungsi untuk menampilkan rangkuman informasi tentang keadaan data yang kita miliki, mirip seperti fungsi ```str()```. 
@@ -68,7 +68,7 @@ glimpse(df)
 ```
 
 ### Select
-Fungsi selanjutnya adalah fungsi ```select```. Fungsi ```select``` digunakan untuk mengambil satu atau beberapa variabel tertentu dari sebuah dataframe. Contoh kita akan mengambil variable "age" dan "job", dan informasi apakah nasabah tersebut berlangganan deposito berjangka atau tidak
+Fungsi selanjutnya adalah fungsi ```select```. Fungsi ```select``` digunakan untuk mengambil satu atau beberapa variabel tertentu dari suatu dataframe. Contohnya, kita akan mengambil variable "age" dan "job" serta informasi apakah nasabah tersebut berlangganan deposito berjangka atau tidak, dari dataset yang sudah kita impor.
 
 ```{r}
 # Select variabel "age" dan "job"
@@ -89,7 +89,7 @@ head(df_usia_nikah)
 ```
 
 ### Filter
-Fungsi ```filter()``` digunakan untuk menyeleksi dan menampilkan data sesuai dengan ketentuan yang diberikan. Contoh kita akan memfilter data nasabah yang memiliki pekerjaan sebagai admin, atau memfilter nasabah berlangganan deposito berjangka
+Fungsi ```filter()``` digunakan untuk menyeleksi dan menampilkan data sesuai dengan ketentuan yang diberikan. Contoh kita akan memfilter data nasabah yang memiliki pekerjaan sebagai admin, atau memfilter nasabah yang berlangganan deposito berjangka.
 
 ```{r}
 # Filter job = Admin
@@ -108,7 +108,7 @@ head(df_married)
 ```
 
 ### Mutate
-Fungsi ```mutate()``` dapat digunakan untuk memodifikasi atau menambahkan variabel baru. Variabel baru tersebut dapat berupa variabel kategorik maupun numerik. Contoh kita akan membuat variable baru yang berisikan rasio ```usia/jumlah saldo tabungan``` masing-masing nasabah.
+Fungsi ```mutate()``` dapat digunakan untuk memodifikasi atau menambahkan variabel baru. Variabel baru tersebut dapat berupa variabel kategorik maupun numerik. Contohnya, kita akan membuat variable baru yang berisikan rasio ```usia/jumlah saldo tabungan``` untuk masing-masing nasabah.
 
 ```{r}
 # Membuat variabel baru menggunakan fungsi mutate()
@@ -119,7 +119,7 @@ head(df_mutate)
 ```
 
 ### Sampling
-Fungsi ini digunakan untuk mengambil sample secara acak pada data. Fungsi ```sample_n()``` berarti mengambil sampel berdasarkan nilai n yang ditentukan. Contoh kita akan mengambil sample sebanyak 100 dari data. 
+Fungsi ini digunakan untuk mengambil sample secara acak pada data. Fungsi ```sample_n()``` digunakan untuk mengambil sampel sejumlah nilai n yang ditentukan. Contoh kita akan mengambil sample sebanyak 100 dari data. 
 
 ```{r}
 # Mengambil 100 baris sample data
@@ -133,7 +133,7 @@ dim(df_sample)
 ```
 
 ### Summarize
-Fungsi ```summarise()``` digunakan untuk meringkas beberapa nilai data menjadi satu nilai. Fungsi ini akan menjadi sangat berguna apabila digabungkan fungsi lain dalam ```dplyr```. Fungsi di dalam summarise yang dapat digunakan seperti ```mean()```, ```median()```, ```sd()```,  ```min()```, ```max()```, ```quantile()```, ```first()```, ```last()```. Contoh kita akan menghitung rata-rata usia nasabah.
+Fungsi ```summarise()``` digunakan untuk meringkas beberapa nilai data menjadi satu nilai. Fungsi ini akan menjadi sangat berguna apabila digabungkan dengan fungsi lain dalam ```dplyr```. Fungsi summarise yang dapat digunakan meliputi ```mean()```, ```median()```, ```sd()```,  ```min()```, ```max()```, ```quantile()```, ```first()```, ```last()```. Contoh kita akan menghitung rata-rata usia nasabah.
 
 ```{r}
 # Menghitung rata-rata nilai variabel "age"
@@ -144,7 +144,7 @@ print(df_summarise)
 ```
 
 ### Arrange
-Fungsi ```arrange()``` berguna untuk mengurutkan data berdasarkan nilai. Variabel yang menjadi acuan untuk diurutkan dapat lebih dari satu dan dapat ditentukan apakah dari besar ke kecil atau dari kecil ke besar. Contoh kita akan mengurutkan data kita berdasarkan usia. 
+Fungsi ```arrange()``` berguna untuk mengurutkan data berdasarkan nilai. Variabel yang menjadi acuan pengurutan dapat berjumlah lebih dari satu. Selain itu, kita juga dapat menentukan jenis urutan: dari besar ke kecil atau dari kecil ke besar. Contohnya, kita akan mengurutkan data berdasarkan usia. 
 
 ```{r}
 # Mengurutkan data berdasarkan "age"
@@ -155,7 +155,7 @@ head(df_arrange)
 ```
 
 ### Pipe 
-Fungsi ini menggunakan notasi ```%>%``` yang berguna untuk membuat fungsi berantai atau fungsi terus menerus. Fungsi pipe memungkinkan kita menuliskan lebih dari satu fungsi sekaligus tanpa harus menyimpannya terlebih dahulu. Contoh kita akan mencari nilai rata-rata saldo tabungan dari nasabah yang berlangganan deposito berjangka dan yang tidak
+Fungsi ini menggunakan notasi ```%>%``` yang berguna untuk membuat fungsi berantai atau fungsi terus menerus. Fungsi pipe memungkinkan kita menuliskan lebih dari satu fungsi sekaligus tanpa harus menyimpan hasilnya terlebih dahulu. Contohnya, kita akan mencari nilai rata-rata saldo tabungan dari nasabah yang berlangganan deposito berjangka dan yang tidak
 
 ```{r}
 # Menggunakan pipe untuk mengetahui saldo rata-rata pelanggan yang berlangganan deposito berjangka
@@ -176,7 +176,7 @@ print(df_pipe)
 ```
 
 ## Praktek
-Sekarang teman-teman sudah paham teknik-teknik melakukan transformasi data menggunakan Package ```dplyr```. Sekarang saatnya kita meangaplikasikan ke kasus baru. Kita akan menggunakan dataset telco customer churn dataset yang juga tersedia di Kaggle. Dataset Telco customer churn berisikan informasi pelanggan sebuah perusahaan telekomunikasi. Mari kita import datanya terlebih dahulu. 
+Kita sudah memahami teknik-teknik dalam proses transformasi data menggunakan Package ```dplyr```. Sekarang saatnya kita meangaplikasikan teknik - teknik ini pada kasus yang baru. Kita akan menggunakan dataset Telco Customer Churn yang tersedia di Kaggle. Dataset ini berisi informasi profil pelanggan dari suatu perusahaan telekomunikasi. Mari kita import datanya terlebih dahulu. 
 
 ```{r}
 # Import Customer Churn Dataset
@@ -184,9 +184,9 @@ df_churn <- read_csv("data/raw/customer-churn.csv")
 ```
 
 ### Soal  
-Di praktek ini teman-teman akan menjadi seorang data scientist di perusahaan telekomunikasi tersebut dan bertugas untuk menjawab pertanyaan-pertanyaan yang ajukan oleh manajemen berdasarkan data yang diberikan menggunakan Package ```dplyr```.
+Pada praktik ini, teman-teman akan berperan sebagai seorang data scientist di perusahaan telekomunikasi tersebut dan bertugas untuk menjawab pertanyaan-pertanyaan yang ajukan oleh manajemen berdasarkan data yang telah tersedia menggunakan Package ```dplyr```.
 
-#### Contoh Soal: Berapa banyak jumlah pelanggan yang churn? 
+#### Contoh Soal: Berapa jumlah pelanggan yang churn? 
 ```{r}
 # Jawaban
 df_churn %>%
@@ -194,19 +194,19 @@ df_churn %>%
   count()
 ```
 
-#### Soal 1: Berapa banyak pelanggan yang tidak churn?
+#### Soal 1: Berapa jumlah pelanggan yang tidak churn?
 ```{r}
 # Jawaban soal 1
 
 ```
 
-#### Soal 2: Carilah 5 pelanggan yang memiliki jumlah tagihan tertinggi?
+#### Soal 2: Carilah 5 pelanggan dengan jumlah tagihan tertinggi?
 ```{r}
 # Jawaban soal 2
 
 ```
 
-#### Soal 3: Carilah daftar pelanggan yang churn dibawah 3 bulan berlangganan
+#### Soal 3: Carilah daftar pelanggan yang telah churn sebelum 3 bulan berlangganan
 ```{r}
 # Jawaban soal 3
 
@@ -218,7 +218,7 @@ df_churn %>%
 
 ```
 
-#### Soal 5: Carilah rata-rata tagihan bulanan pelanggan yang churn dan tidak
+#### Soal 5: Carilah rata-rata tagihan bulanan bagi pelanggan yang churn dan bagi pelanggan yang tidak churn
 ```{r}
 # Jawaban soal 5
 

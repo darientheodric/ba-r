@@ -15,17 +15,17 @@ knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
 ## Selamat Datang di R
-Di modul kali ini kita akan belajar dasar - dasar pemrograman R. Seperti yang sudah dijelaskan di R ada beberapa tipe file untuk menjalankan kodingan R yaitu R script dan R Markdown. Keseluruhan modul kita akan menggunakan format R Markdown. Di format R Markdown code R dijalankan pada cell yang dikatakan chunk. Untuk menambahkan chunk bisa menggunakan tab insert atau menekan tombol ```ctrl + alt + i``` untuk windows atau ```command + alt + i``` 
+Di modul ini kita akan belajar dasar - dasar pemrograman R. Seperti yang sudah dijelaskan, ada beberapa tipe file R yang dapat digunakan untuk menjalankan kodingan R yaitu: R script dan R Markdown. Keseluruhan modul ini akan menggunakan tipe format R Markdown. Dengan format R Markdown, code R dijalankan pada cell yang dikatakan "chunk". Untuk menambahkan chunk, kita dapat menggunakan tab "insert" atau menekan tombol ```ctrl + alt + i``` untuk windows atau ```command + alt + i``` untuk mac. 
 
 ```{r}
 # Ini adalah chunk
 print("ini adalah chunk")
 ```
 
-Sekarang kamu sudah mengetahui cara menuliskan dan menjalankan kode R. Mari kita mulai berkenalan dengan R.
+Sekarang kamu sudah mengetahui cara menuliskan dan menjalankan kode R. Mari kita mulai berkenalan lebih lanjut dengan R.
 
 ## Operasi Aritmatik
-Seperti bahasa  pemrograman lainnya, R dapat  melakukan operasi matematika seperti, pertambahan, pengurangan, perkalian, dan lainnya. 
+Seperti bahasa  pemrograman lainnya, R dapat  melakukan operasi matematika seperti: pertambahan, pengurangan, perkalian, dan lainnya. 
 
 ```{r}
 # Pertambahan
@@ -58,7 +58,7 @@ Seperti bahasa  pemrograman lainnya, R dapat  melakukan operasi matematika seper
 ```
 
 ## Variable Assignment
-R memungkinkan kita menyimpan nilai dalam bentuk variable, untuk melakukannya kita dapat menggunakan  ```<-``` atau ```=```.
+R memungkinkan kita untuk menyimpan nilai dalam bentuk variable. Untuk melakukannya, kita dapat menggunakan perintah  ```<-``` atau ```=```.
 
 ```{r}
 # Contoh membuat variabel dengan  "<-"
@@ -81,8 +81,16 @@ kuantitas <- 3
 jumlah_kuantitas <- harga * kuantitas
 print(jumlah_kuantitas)
 ```
+
 ## Tipe Data
-R memiliki 5 tipe data utama yaitu Numeric, Integer, Character, Logical, Complex. Berikut contoh masing-masing tipe data
+R memiliki 5 tipe data utama yaitu:
+- Numeric
+- Integer
+- Character
+- Logical
+- Complex.
+
+Berikut contoh masing-masing tipe data
 
 ### Numeric
 ```{r}
@@ -141,13 +149,14 @@ class(com)
 
 ## Struktur Data
 R memiliki beberapa struktur data yaitu:
-
 - Vectors
 - Lists
 - Matrices
 - Arrays
 - Factors
 - Data Frames
+
+Berikut contoh masing-masing struktur data
 
 ### Vektor 
 ```{r}
@@ -190,7 +199,7 @@ class(df)
 ```
 
 ## Fungsi
-Fungsi merupakan sekumpulan baris perintah atau kode yang disusun bersama untuk melakukan tugas tertentu. Di R kita dapat menggunakan fungsi bawaan atau membuat fungsi baru.
+Fungsi merupakan sekumpulan baris perintah atau kode yang disusun secara bersama-sama untuk melakukan tugas tertentu. Dalam R, kita dapat menggunakan fungsi bawaan atau membuat fungsi yang baru.
 
 ### Fungsi Bawaan
 ```{r}
@@ -215,7 +224,7 @@ hitung_bmi(tinggi = 1.57, berat = 63)
 ```
 
 ## Percabangan 
-Percabangan merupakan fitur pemrograman untuk melakukan tindakan/perintah yang berbeda tergantung pada apakah kondisi boolean yang ditentukan. Berikut ini merupakan contoh-contoh percabangan
+Percabangan merupakan fitur pemrograman untuk melakukan tindakan/perintah yang berbeda untuk setiap kondisi boolean yang ditentukan. Berikut ini merupakan contoh-contoh percabangan
 
 ### If Statement
 ```{r}
@@ -253,7 +262,7 @@ if ("Institiut Teknologi Bandung" %in% kampus_bandung) {
 ```
 
 ## Perulangan atau Loop
-Perulangan atau loop merupakan sebuah urutan perintah yang secara menerus diulang hingga suatu kondisi tercapai. Ada 2 tipe loop yang umum digunakan yaitu for loop dan whiile loop. 
+Perulangan atau loop merupakan sebuah perintah dibuat untuk mengulang secara menerus hingga suatu kondisi tercapai. Ada 2 tipe loop yang umum digunakan yaitu for loop dan while loop. 
 
 ### For Loop
 ```{r}
@@ -275,7 +284,7 @@ while (hitungan < 7) {
 ```
 
 ## Package
-R Package merupakan kumpulan fungsi/function atau data yang ada di R. Ada banyak package yang dibuat/dikembangkan oleh pengguna lainnya. Berikut contoh-contoh package yang umum digunakan. Untuk dapat menggunakan fungsi yang ada pada suatu package, kita harus menginstall dan memuat packagenya terlebih dahulu. 
+R Package merupakan kumpulan fungsi/function atau data yang ada di R. Terdapat banyak packages yang dibuat/dikembangkan oleh pengguna lainnya. Berikut contoh-contoh package yang umum digunakan. Untuk dapat menggunakan fungsi yang ada pada suatu package, kita harus menginstall dan memuat packagenya terlebih dahulu. 
 
 ### Readr
 Package readr berguna untuk mengimport data dengan format .csv atau format lain kedalam environtment R.

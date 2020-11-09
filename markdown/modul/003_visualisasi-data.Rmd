@@ -14,12 +14,12 @@ editor_options:
 knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
-Visualisasi atau data visualization merupakan teknik untuk mempresentasikan data dalam bentuk grafik atau bagan untuk menampilkan info yang tersembunyi yang ada didalam data. 
+Visualisasi Data didefinisikan sebagai teknik untuk mempresentasikan data dalam bentuk grafik atau bagan untuk menampilkan informasi yang tersembunyi dalam data agar lebih mudah dipahami oleh pembaca / pengguna laporan. 
 
-Di modul kali in kita akan belajar melakukan visualisasi data menggunakan R. Dataset yang akan kita gunakan dalam modul kali ini sama seperti pada modul sebelumnya yaitu dataset Bank Marketing yang tersedia di Kaggle.
+Di modul kali in kita akan belajar melakukan visualisasi data menggunakan R. Dataset yang akan kita gunakan masih sama seperti data pada modul sebelumnya yaitu Bank Marketing dataset.
 
 ## Import Data
-Untuk dapat melakukan visualisasi data. Kita harus mengimport datanya terlebih dahulu. 
+Sebelum melakukan visualisasi data, kita harus mengimport dataset terlebih dahulu. 
 
 ```{r}
 # Load Package readr
@@ -29,7 +29,7 @@ library(readr)
 df <- read_csv2("data/raw/bank-marketing.csv")
 ```
 
-Setelah kita mengimport datasetnya, kita bisa melihat rangkuman informasi dataset tersebut menggunakan fungsi glimpse dari Package ```dplyr``` yang sudah kita pelajari di modul sebelumnya. 
+Kita kemudian dapat melihat rangkuman dataset tersebut menggunakan fungsi glimpse dari Package ```dplyr``` yang telah kita pelajari di modul sebelumnya. 
 
 ```{r}
 # Load package readr
@@ -41,7 +41,7 @@ glimpse(df)
 
 ## Visualisasi data menggunakan base R
 
-Pada dasarnya di R kita dapat melakukan visualiasi tanpa Package apapun.
+Pada dasarnya, dengan R kita dapat melakukan visualiasi tanpa Package apapun.
 
 ### Histogram
 
@@ -52,10 +52,10 @@ Kita dapat melakukan visualisasi histogram untuk melihat distribusi umur nasabah
 hist(df$age)
 ```
 
-Sayangnya visualisasi ini menggunakan base R terbatas, dan hasil visualisasinya juga kurang menarik. Untungnya di R ada sebuah Package visualisasi data yang sangat mumpuni yaitu ```ggplot2```.
+Sayangnya, visualisasi dengan menggunakan base R sangat terbatas. Hasil visualisasinya juga kurang menarik. Dengan demikian, biasanya kita menggunakan Package visualisasi data yang sangat mumpuni yaitu ```ggplot2```.
 
 ## Visualisasi data menggunakan ggplot2
-ggplot2 merupakan Package untuk visualisasi data yang juga diciptakan oleh Hadley Wickham. ```ggplot2``` memiliki kelebihan dalam pembuatan grafik visualisasi data yang elegan dan kompleks. Sebelum itu kita harus menginstall dan memuat Package ```ggplot2``` kedalam R environtment kita kita terlebih dahulu.  
+ggplot2 merupakan Package untuk visualisasi data yang juga diciptakan oleh Hadley Wickham. ```ggplot2``` memiliki kelebihan dalam pembuatan grafik visualisasi data. Grafik yang diproduksi dapat lebih elegan dan kompleks. Untuk menggunakan package ini, kita harus menginstall dan memuat Package ```ggplot2``` kedalam R environtment kita.
 
 ```{r}
 # Install Package
@@ -76,7 +76,7 @@ ggplot(data = df, aes(x = age)) +
   geom_histogram(colour = "#e9ecef", fill = "#00bfc4")
 ```
 
-Jauh lebih menarik bukan? Selain histogram banyak sekali grafik visualisasi lainnya yang dapat dilakukan di ```ggplot2```. Beriku beberapa contohnya. 
+Jauh lebih menarik bukan? Selain histogram, masik banyak grafik visualisasi lainnya yang dapat diproduksi menggunakan package ```ggplot2```. Berikut beberapa contohnya. 
 
 ### Barchart
 ```{r}
@@ -113,7 +113,7 @@ ggplot(data = df, aes(x = y, y = age, fill = y)) +
 ```
 
 ## Kustomisasi Graph
-Graph yang dihasilkan ggplot juga dapat dikustomisasi sehingga lebih menarik dan informatif. Berikut ini beberapa contoh kustomisasi yang dapat kita lakukan. Untuk kustomisasi secara lengkap teman-teman melihat dokumentasi ggplot2. 
+Graph yang dihasilkan melalui ggplot juga dapat dikustomisasi sehingga lebih menarik dan informatif. Berikut ini beberapa contoh kustomisasi yang dapat kita lakukan. Untuk kustomisasi secara lengkap teman-teman melihat dokumentasi ggplot2. 
 
 ### Judul dan sub judul
 ```{r}
@@ -196,7 +196,7 @@ df_churn <- read_csv("data/raw/customer-churn.csv")
 ```
 
 ### Soal
-Sama seperti praktek sebelumnya teman-teman merupakan seorang data scientist diperusahaan telekomunikasi seperti yang sudah diceritakan sebelumnya. Teman-teman diminta untuk menjawab pertanyaan yang ajukan manajemen, kali ini dalam bentuk visualisasi data menggunakan Package ```ggplot```. 
+Sama seperti praktik sebelumnya, teman-teman masih berperan sebagai seorang data scientist di perusahaan telekomunikasi. Teman-teman diminta untuk menjawab pertanyaan yang ajukan oleh manajemen. Pertanyaan kali ini terkait dengan tugas visualisasi data menggunakan Package ```ggplot```. 
 
 ### Contoh Soal: Visualisasikan banyaknya pelanggan yang churn dan tidak
 ```{r}
@@ -212,13 +212,13 @@ ggplot(data = df_churn, aes(x = Churn, fill = Churn)) +
 
 ```
 
-#### Soal 2: Visualisasikan jumlah pelanggan laki-laki dan perempuan
+#### Soal 2: Visualisasikan jumlah pelanggan berjenis kelamin laki-laki dan perempuan
 ```{r}
 # Jawaban soal 2
 
 ```
 
-#### Soal 3: Visualisasikan hubungan tenure dan jumlah tagihan bulanan dan lihat keterkaitannya dengan churn atau tidak
+#### Soal 3: Visualisasikan hubungan tenure dan jumlah tagihan bulanan, kemudian lihat keterkaitannya dengan keputusan churn (churn atau tidak churn)
 ```{r}
 # Jawaban soal 3
 
