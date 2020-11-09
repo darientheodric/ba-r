@@ -202,13 +202,17 @@ code span.ot { color: #007020; }
 <div id="content-wrapper">
   <div class="inner clearfix">
     <section id="main-content">
-<p>Machine Learning merupakan cabang ilmu dari Artificial Intelligence (Kecerdasan Buatan) yang berfokus pada pengembangan sistem yang mampu belajar “sendiri” (Tidak harus di program secara manual oleh manusia).</p>
-<p>Di praktek kali ini kita akan belajar membuat model untuk memprediksi apakah seseorang akan berlangganan Deposito Berjanka (Deposito Jangka Panjang).</p>
-<div id="load-library" class="section level2">
-<h2>Load Library</h2>
-<p>Sebelum kita mulai, kita harus mengaktifkan library-library yang akan kita gunakan terlebih dulu</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Load library</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<p>Di praktek kali ini kita akan belajar membuat model machine learning untuk memprediksi apakah seorang nasabah akan berlangganan Deposito Berjangka (Term Deposit) menggunakan Bank Marketing Dataset seperti yang sudah kita gunakan di modul-modul sebelumnya. Dataset bank marketing ini berisi informasi terkait Marketing Campaign sebuah Bank di Portugis. Tujuan dari Marketing Campaign ini yaitu untuk menawarkan deposito berjangka (Deposito Jangka Panjang) kepada para nasabah.</p>
+<div id="load-package" class="section level2">
+<h2>Load Package</h2>
+<p>Pada praktik-praktik sebelumnya, teman-teman sudah belajar berbagai Packages seperti <code>dplyr</code>, <code>readr</code>, <code>ggplot</code>. Package-Package tersebut merupakan bagian dari Package <code>tidyverse</code>. Package tidyverse ini merupakan sekumpulan Package-Package untuk melakukan proses data science, mulai dari mengimport data hingga melakukan visualisasi. Dengan me-load Package <code>tidyverse</code> kita secara otomatis juga akan mengaktifkan Package-Package yang ada didalamnya, termasuk <code>dplyr</code>, <code>readr</code>, <code>ggplot</code>. Untuk melihat Package apa saja yang termasuk di Package tidyverse, teman-teman dapat melihatnya di dokumentasi tidyverse.</p>
+<p>Selain Package <code>tidyverse</code>, kita juga memerlukan Package <code>tidymodels</code> untuk membantu membuat alur/workflow model machine learning, Package <code>discrim</code> untuk model analisis discriminant, dan Package <code>naivebayes</code> untuk membentuk model dengan algoritma Naive Bayes. Mari kita install dan load Package-Package tersebut terlebih dahulu.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Install package</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;tidymodels&quot;</span>, <span class="st">&quot;discrim&quot;</span>, <span class="st">&quot;naivebayes&quot;</span>))</span></code></pre></div>
+<pre><code>## Installing packages into &#39;/home/rstudio-user/R/x86_64-pc-linux-gnu-library/4.0&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Load package</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
 ## ✓ tibble  3.0.4     ✓ dplyr   1.0.2
@@ -217,7 +221,7 @@ code span.ot { color: #007020; }
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">library</span>(tidymodels)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">library</span>(tidymodels)</span></code></pre></div>
 <pre><code>## ── Attaching packages ────────────────────────────────────── tidymodels 0.1.1 ──</code></pre>
 <pre><code>## ✓ broom     0.7.2      ✓ recipes   0.1.14
 ## ✓ dials     0.0.9      ✓ rsample   0.0.8 
@@ -231,22 +235,20 @@ code span.ot { color: #007020; }
 ## x dplyr::lag()      masks stats::lag()
 ## x yardstick::spec() masks readr::spec()
 ## x recipes::step()   masks stats::step()</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">library</span>(randomForest)</span></code></pre></div>
-<pre><code>## randomForest 4.6-14</code></pre>
-<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">library</span>(discrim)</span></code></pre></div>
 <pre><code>## 
-## Attaching package: &#39;randomForest&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## Attaching package: &#39;discrim&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dials&#39;:
 ## 
-##     combine</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     margin</code></pre>
+##     smoothness</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">library</span>(naivebayes)</span></code></pre></div>
+<pre><code>## naivebayes 0.9.7 loaded</code></pre>
 </div>
 <div id="import-data" class="section level2">
 <h2>Import Data</h2>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Load Data</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>df_bm &lt;-<span class="st"> </span><span class="kw">read_csv2</span>(<span class="st">&quot;data/raw/bank-marketing.csv&quot;</span>)</span></code></pre></div>
+<p>Sebelum memulai, mari kita import datanya terlebih dahulu.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Import Data</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>df &lt;-<span class="st"> </span><span class="kw">read_csv2</span>(<span class="st">&quot;data/raw/bank-marketing.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## ℹ Using &#39;,&#39; as decimal and &#39;.&#39; as grouping mark. Use `read_delim()` for more control.</code></pre>
 <pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
@@ -269,33 +271,71 @@ code span.ot { color: #007020; }
 ##   poutcome = col_character(),
 ##   y = col_character()
 ## )</code></pre>
-</div>
-<div id="split-data" class="section level2">
-<h2>Split Data</h2>
-<p>Sebelum dimodelkan, data harus dibagi menjadi dua yaitu data train untuk membuat model dan data test untuk menguji akurasi model. Umumnya, data dibagi dengan proporsi 70% train dan 30% test.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Split Data with 70:30 Proportion</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a>df_bm_split &lt;-<span class="st"> </span><span class="kw">initial_split</span>(df_bm, <span class="dt">prop =</span> <span class="fl">0.7</span>)</span>
-<span id="cb18-3"><a href="#cb18-3"></a>df_bm_split</span></code></pre></div>
-<pre><code>## &lt;Analysis/Assess/Total&gt;
-## &lt;31648/13563/45211&gt;</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># See Training Data</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>df_bm_split <span class="op">%&gt;%</span></span>
-<span id="cb20-3"><a href="#cb20-3"></a><span class="st">  </span><span class="kw">training</span>() <span class="op">%&gt;%</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a><span class="st">  </span><span class="kw">glimpse</span>()</span></code></pre></div>
-<pre><code>## Rows: 31,648
+<p>Setelah diimport, kita dapat melihat beberapa data pertama menggunakan fungsi <code>head()</code> , atau menggunakan fungsi <code>glimpse()</code></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Meampilkan 5 baris pertama data</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">head</span>(df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 17
+##     age job   marital education default balance housing loan  contact   day
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
+## 1    58 mana… married tertiary  no         2143 yes     no    unknown     5
+## 2    44 tech… single  secondary no           29 yes     no    unknown     5
+## 3    33 entr… married secondary no            2 yes     yes   unknown     5
+## 4    47 blue… married unknown   no         1506 yes     no    unknown     5
+## 5    33 unkn… single  unknown   no            1 no      no    unknown     5
+## 6    35 mana… married tertiary  no          231 yes     no    unknown     5
+## # … with 7 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
+## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;, y &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># menampilkan rangkuman data menggunakan fungsi glimpse()</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="kw">glimpse</span>(df)</span></code></pre></div>
+<pre><code>## Rows: 45,211
 ## Columns: 17
-## $ age       &lt;dbl&gt; 58, 44, 33, 47, 33, 28, 43, 41, 29, 58, 45, 57, 60, 28, 32,…
+## $ age       &lt;dbl&gt; 58, 44, 33, 47, 33, 35, 28, 42, 58, 43, 41, 29, 53, 58, 57,…
 ## $ job       &lt;chr&gt; &quot;management&quot;, &quot;technician&quot;, &quot;entrepreneur&quot;, &quot;blue-collar&quot;, …
-## $ marital   &lt;chr&gt; &quot;married&quot;, &quot;single&quot;, &quot;married&quot;, &quot;married&quot;, &quot;single&quot;, &quot;singl…
+## $ marital   &lt;chr&gt; &quot;married&quot;, &quot;single&quot;, &quot;married&quot;, &quot;married&quot;, &quot;single&quot;, &quot;marri…
 ## $ education &lt;chr&gt; &quot;tertiary&quot;, &quot;secondary&quot;, &quot;secondary&quot;, &quot;unknown&quot;, &quot;unknown&quot;,…
-## $ default   &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;,…
-## $ balance   &lt;dbl&gt; 2143, 29, 2, 1506, 1, 447, 593, 270, 390, 71, 13, 52, 60, 7…
+## $ default   &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;…
+## $ balance   &lt;dbl&gt; 2143, 29, 2, 1506, 1, 231, 447, 2, 121, 593, 270, 390, 6, 7…
 ## $ housing   &lt;chr&gt; &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes…
-## $ loan      &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no…
+## $ loan      &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no…
 ## $ contact   &lt;chr&gt; &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unk…
 ## $ day       &lt;dbl&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,…
 ## $ month     &lt;chr&gt; &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;ma…
-## $ duration  &lt;dbl&gt; 261, 151, 76, 92, 198, 217, 55, 222, 137, 71, 98, 38, 219, …
+## $ duration  &lt;dbl&gt; 261, 151, 76, 92, 198, 139, 217, 380, 50, 55, 222, 137, 517…
+## $ campaign  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+## $ pdays     &lt;dbl&gt; -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,…
+## $ previous  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ poutcome  &lt;chr&gt; &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unk…
+## $ y         &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;,…</code></pre>
+<p>Pada umumnya, setelah data diimport, tahapan selanjutnya yaitu EDA atau Exploratory Data Analysis. EDA bertujuan untuk mencari insight awal terkait data yang kita miliki. Namun, di praktik kali ini kita mengsumsikan bahwa data yang kita miliki sudah cukup baik untuk dimodelkan, dan kita sudah memahami data tersebut pada saat praktik-praktik sebelumnya.</p>
+</div>
+<div id="split-data" class="section level2">
+<h2>Split Data</h2>
+<p>Sebelum dimodelkan, data harus dibagi menjadi dua yaitu data train untuk membuat model, dan data test untuk menguji performa model. Umumnya, data dibagi dengan proporsi: 70% train dan 30% test.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Set Seed</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="kw">set.seed</span>(<span class="dv">1234</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Membagi data dengan proporsi 70:30</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>df_split &lt;-<span class="st"> </span><span class="kw">initial_split</span>(df, <span class="dt">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb24-3"><a href="#cb24-3"></a>df_split</span></code></pre></div>
+<pre><code>## &lt;Analysis/Assess/Total&gt;
+## &lt;36169/9042/45211&gt;</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Menampilkan data training</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>df_split <span class="op">%&gt;%</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="st">  </span><span class="kw">training</span>() <span class="op">%&gt;%</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="st">  </span><span class="kw">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 36,169
+## Columns: 17
+## $ age       &lt;dbl&gt; 58, 44, 33, 47, 33, 35, 42, 58, 43, 41, 29, 53, 58, 57, 51,…
+## $ job       &lt;chr&gt; &quot;management&quot;, &quot;technician&quot;, &quot;entrepreneur&quot;, &quot;blue-collar&quot;, …
+## $ marital   &lt;chr&gt; &quot;married&quot;, &quot;single&quot;, &quot;married&quot;, &quot;married&quot;, &quot;single&quot;, &quot;marri…
+## $ education &lt;chr&gt; &quot;tertiary&quot;, &quot;secondary&quot;, &quot;secondary&quot;, &quot;unknown&quot;, &quot;unknown&quot;,…
+## $ default   &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;…
+## $ balance   &lt;dbl&gt; 2143, 29, 2, 1506, 1, 231, 2, 121, 593, 270, 390, 6, 71, 16…
+## $ housing   &lt;chr&gt; &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes&quot;, &quot;yes…
+## $ loan      &lt;chr&gt; &quot;no&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;, &quot;no&quot;…
+## $ contact   &lt;chr&gt; &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unknown&quot;, &quot;unk…
+## $ day       &lt;dbl&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,…
+## $ month     &lt;chr&gt; &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;ma…
+## $ duration  &lt;dbl&gt; 261, 151, 76, 92, 198, 139, 380, 50, 55, 222, 137, 517, 71,…
 ## $ campaign  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
 ## $ pdays     &lt;dbl&gt; -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,…
 ## $ previous  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
@@ -304,13 +344,13 @@ code span.ot { color: #007020; }
 </div>
 <div id="membut-alur-pemrosesan-data" class="section level2">
 <h2>Membut Alur Pemrosesan Data</h2>
-<p>Setelah membagi data kedalam training dan testing, kita dapat membuat alur pemrosesan data. Disini menenetukan role masing-masing variable, seperti menentukan variable yang akan diprediksi, dan yang memprediksi.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Create Recipe</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>df_bm_recipe &lt;-<span class="st"> </span><span class="kw">training</span>(df_bm_split) <span class="op">%&gt;%</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="st">  </span><span class="kw">recipe</span>(y <span class="op">~</span>.) <span class="op">%&gt;%</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a><span class="st">  </span><span class="kw">prep</span>()</span>
-<span id="cb22-5"><a href="#cb22-5"></a></span>
-<span id="cb22-6"><a href="#cb22-6"></a>df_bm_recipe</span></code></pre></div>
+<p>Setelah membagi data menjadi data training dan data testing, kita dapat mulai membuat alur pemrosesan data. Disini, kita akan menenetukan peran masing-masing variable, meliputi peran sebagai target yang diprediksi, dan yang berperan sebagai prediktor. Pada pemrosesan data ini kita juga dapat menambah proses lainnya untuk meningkatkan kualitas data seperti: mengisi nilai data yang kosong, normalisasi, down sampling, dan sebagainya.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># Membuat Recipe</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>df_recipe &lt;-<span class="st"> </span><span class="kw">training</span>(df_split) <span class="op">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="st">  </span><span class="kw">recipe</span>(y <span class="op">~</span>.) <span class="op">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="st">  </span><span class="kw">prep</span>()</span>
+<span id="cb28-5"><a href="#cb28-5"></a></span>
+<span id="cb28-6"><a href="#cb28-6"></a>df_recipe</span></code></pre></div>
 <pre><code>## Data Recipe
 ## 
 ## Inputs:
@@ -319,128 +359,208 @@ code span.ot { color: #007020; }
 ##    outcome          1
 ##  predictor         16
 ## 
-## Training data contained 31648 data points and no missing data.</code></pre>
-<p>Untuk melihat bagaimana hasil pemrosesan ini pada data traning kita. Kita dapat menggunakan fungsi <code>juice()</code>.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># See training data using juice</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>df_bm_training &lt;-<span class="st"> </span><span class="kw">juice</span>(df_bm_recipe)</span>
-<span id="cb24-3"><a href="#cb24-3"></a><span class="kw">glimpse</span>(df_bm_training)</span></code></pre></div>
-<pre><code>## Rows: 31,648
+## Training data contained 36169 data points and no missing data.</code></pre>
+<p>Untuk melihat hasil pemrosesan pada data traning, kita dapat menggunakan fungsi <code>juice()</code>.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co"># Mererapkan ke data training </span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>df_training &lt;-<span class="st"> </span><span class="kw">juice</span>(df_recipe)</span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="kw">glimpse</span>(df_training)</span></code></pre></div>
+<pre><code>## Rows: 36,169
 ## Columns: 17
-## $ age       &lt;dbl&gt; 58, 44, 33, 47, 33, 28, 43, 41, 29, 58, 45, 57, 60, 28, 32,…
+## $ age       &lt;dbl&gt; 58, 44, 33, 47, 33, 35, 42, 58, 43, 41, 29, 53, 58, 57, 51,…
 ## $ job       &lt;fct&gt; management, technician, entrepreneur, blue-collar, unknown,…
-## $ marital   &lt;fct&gt; married, single, married, married, single, single, single, …
+## $ marital   &lt;fct&gt; married, single, married, married, single, married, divorce…
 ## $ education &lt;fct&gt; tertiary, secondary, secondary, unknown, unknown, tertiary,…
-## $ default   &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, no, no, no, no, no,…
-## $ balance   &lt;dbl&gt; 2143, 29, 2, 1506, 1, 447, 593, 270, 390, 71, 13, 52, 60, 7…
+## $ default   &lt;fct&gt; no, no, no, no, no, no, yes, no, no, no, no, no, no, no, no…
+## $ balance   &lt;dbl&gt; 2143, 29, 2, 1506, 1, 231, 2, 121, 593, 270, 390, 6, 71, 16…
 ## $ housing   &lt;fct&gt; yes, yes, yes, yes, no, yes, yes, yes, yes, yes, yes, yes, …
-## $ loan      &lt;fct&gt; no, no, yes, no, no, yes, no, no, no, no, no, no, no, yes, …
+## $ loan      &lt;fct&gt; no, no, yes, no, no, no, no, no, no, no, no, no, no, no, no…
 ## $ contact   &lt;fct&gt; unknown, unknown, unknown, unknown, unknown, unknown, unkno…
 ## $ day       &lt;dbl&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,…
 ## $ month     &lt;fct&gt; may, may, may, may, may, may, may, may, may, may, may, may,…
-## $ duration  &lt;dbl&gt; 261, 151, 76, 92, 198, 217, 55, 222, 137, 71, 98, 38, 219, …
+## $ duration  &lt;dbl&gt; 261, 151, 76, 92, 198, 139, 380, 50, 55, 222, 137, 517, 71,…
 ## $ campaign  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
 ## $ pdays     &lt;dbl&gt; -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,…
 ## $ previous  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
 ## $ poutcome  &lt;fct&gt; unknown, unknown, unknown, unknown, unknown, unknown, unkno…
 ## $ y         &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, no, no, no, no, no,…</code></pre>
-<p>Jika sudah sesuai, kita dapat mengaplikasikannya kedalam data training menggunakan fungsi <code>bake</code>.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># See the testing data using bake</span></span>
-<span id="cb26-2"><a href="#cb26-2"></a>df_bm_testing &lt;-<span class="st"> </span>df_bm_recipe <span class="op">%&gt;%</span></span>
-<span id="cb26-3"><a href="#cb26-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="kw">testing</span>(df_bm_split)) </span>
-<span id="cb26-4"><a href="#cb26-4"></a></span>
-<span id="cb26-5"><a href="#cb26-5"></a><span class="kw">glimpse</span>(df_bm_testing)</span></code></pre></div>
-<pre><code>## Rows: 13,563
+<p>Jika sudah sesuai, kita dapat menerapkan proses tersebut pada data testing menggunakan fungsi <code>bake</code>.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co"># Menerapkan ke data testing</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>df_testing &lt;-<span class="st"> </span>df_recipe <span class="op">%&gt;%</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="st">  </span><span class="kw">bake</span>(<span class="kw">testing</span>(df_split)) </span>
+<span id="cb32-4"><a href="#cb32-4"></a></span>
+<span id="cb32-5"><a href="#cb32-5"></a><span class="kw">glimpse</span>(df_testing)</span></code></pre></div>
+<pre><code>## Rows: 9,042
 ## Columns: 17
-## $ age       &lt;dbl&gt; 35, 42, 58, 53, 57, 51, 33, 56, 57, 53, 37, 44, 58, 58, 29,…
-## $ job       &lt;fct&gt; management, entrepreneur, retired, technician, services, re…
-## $ marital   &lt;fct&gt; married, divorced, married, married, married, married, marr…
-## $ education &lt;fct&gt; tertiary, tertiary, primary, secondary, secondary, primary,…
-## $ default   &lt;fct&gt; no, yes, no, no, no, no, no, no, no, no, no, no, no, no, no…
-## $ balance   &lt;dbl&gt; 231, 2, 121, 6, 162, 229, 0, 779, 839, -3, 0, 2586, 96, -36…
-## $ housing   &lt;fct&gt; yes, yes, yes, yes, yes, yes, yes, yes, no, no, yes, yes, y…
-## $ loan      &lt;fct&gt; no, no, no, no, no, no, no, no, yes, no, no, no, no, no, no…
+## $ age       &lt;dbl&gt; 28, 40, 50, 60, 32, 38, 46, 54, 44, 45, 47, 51, 57, 47, 59,…
+## $ job       &lt;fct&gt; management, retired, management, blue-collar, management, m…
+## $ marital   &lt;fct&gt; single, married, married, married, married, single, married…
+## $ education &lt;fct&gt; tertiary, primary, secondary, unknown, tertiary, tertiary, …
+## $ default   &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, no, no, no, no, no,…
+## $ balance   &lt;dbl&gt; 447, 0, 49, 104, 0, 424, 179, 282, 582, 206, 164, 173, -37,…
+## $ housing   &lt;fct&gt; yes, yes, yes, yes, yes, yes, yes, yes, no, yes, no, yes, n…
+## $ loan      &lt;fct&gt; yes, yes, no, no, no, no, no, yes, yes, no, no, no, no, no,…
 ## $ contact   &lt;fct&gt; unknown, unknown, unknown, unknown, unknown, unknown, unkno…
 ## $ day       &lt;dbl&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,…
 ## $ month     &lt;fct&gt; may, may, may, may, may, may, may, may, may, may, may, may,…
-## $ duration  &lt;dbl&gt; 139, 380, 50, 517, 174, 353, 54, 164, 225, 1666, 137, 160, …
-## $ campaign  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+## $ duration  &lt;dbl&gt; 217, 181, 180, 22, 179, 104, 1778, 154, 211, 193, 212, 529,…
+## $ campaign  &lt;dbl&gt; 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1,…
 ## $ pdays     &lt;dbl&gt; -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,…
 ## $ previous  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
 ## $ poutcome  &lt;fct&gt; unknown, unknown, unknown, unknown, unknown, unknown, unkno…
 ## $ y         &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, no, no, no, no, no,…</code></pre>
 </div>
-<div id="training" class="section level2">
-<h2>Training</h2>
-<p>Tahap selanjutnya ada ada melakukan training model, ditahap ini kita juga menetukan algoritma apa yang akan kita gunakan untuk melakukan prediksi klasifikasi. Di modul ini kita akan menggunakan algoritma random forest.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># Train</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a>df_bm_rf &lt;-<span class="st">  </span><span class="kw">rand_forest</span>(<span class="dt">trees =</span> <span class="dv">100</span>, <span class="dt">mode =</span> <span class="st">&quot;classification&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb28-3"><a href="#cb28-3"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&quot;randomForest&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb28-4"><a href="#cb28-4"></a><span class="st">  </span><span class="kw">fit</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> df_bm_training)</span></code></pre></div>
+<div id="menentukan-algoritma" class="section level2">
+<h2>Menentukan Algoritma</h2>
+<p>Tahap selanjutnya adalah menetukan algoritma apa yang akan kita gunakan untuk melakukan prediksi klasifikasi. Di modul ini, kita akan menggunakan algoritma naive bayes.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co"># Menset model</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>nb_mod &lt;-<span class="st">  </span><span class="kw">naive_Bayes</span>(<span class="dt">mode =</span> <span class="st">&quot;classification&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="st">  </span><span class="kw">set_engine</span>(<span class="st">&#39;naivebayes&#39;</span>) </span></code></pre></div>
 </div>
-<div id="prediksi-ke-data-testing" class="section level2">
-<h2>Prediksi ke data Testing</h2>
-<p>Selanjutnya, dengan model yang kita buat kita dapat melakukan prediksi ke data testing.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># Predict</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a><span class="kw">predict</span>(df_bm_rf, df_bm_testing)</span></code></pre></div>
-<pre><code>## # A tibble: 13,563 x 1
-##    .pred_class
-##    &lt;fct&gt;      
-##  1 no         
-##  2 no         
-##  3 no         
-##  4 no         
-##  5 no         
-##  6 no         
-##  7 no         
-##  8 no         
-##  9 no         
-## 10 yes        
-## # … with 13,553 more rows</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Predict and Bind</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a>df_bm_rf <span class="op">%&gt;%</span></span>
-<span id="cb31-3"><a href="#cb31-3"></a><span class="st">  </span><span class="kw">predict</span>(df_bm_testing) <span class="op">%&gt;%</span></span>
-<span id="cb31-4"><a href="#cb31-4"></a><span class="st">  </span><span class="kw">bind_cols</span>(df_bm_testing) <span class="op">%&gt;%</span></span>
-<span id="cb31-5"><a href="#cb31-5"></a><span class="st">  </span><span class="kw">glimpse</span>()</span></code></pre></div>
-<pre><code>## Rows: 13,563
-## Columns: 18
-## $ .pred_class &lt;fct&gt; no, no, no, no, no, no, no, no, no, yes, no, no, no, no, …
-## $ age         &lt;dbl&gt; 35, 42, 58, 53, 57, 51, 33, 56, 57, 53, 37, 44, 58, 58, 2…
-## $ job         &lt;fct&gt; management, entrepreneur, retired, technician, services, …
-## $ marital     &lt;fct&gt; married, divorced, married, married, married, married, ma…
-## $ education   &lt;fct&gt; tertiary, tertiary, primary, secondary, secondary, primar…
-## $ default     &lt;fct&gt; no, yes, no, no, no, no, no, no, no, no, no, no, no, no, …
-## $ balance     &lt;dbl&gt; 231, 2, 121, 6, 162, 229, 0, 779, 839, -3, 0, 2586, 96, -…
-## $ housing     &lt;fct&gt; yes, yes, yes, yes, yes, yes, yes, yes, no, no, yes, yes,…
-## $ loan        &lt;fct&gt; no, no, no, no, no, no, no, no, yes, no, no, no, no, no, …
-## $ contact     &lt;fct&gt; unknown, unknown, unknown, unknown, unknown, unknown, unk…
-## $ day         &lt;dbl&gt; 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, …
-## $ month       &lt;fct&gt; may, may, may, may, may, may, may, may, may, may, may, ma…
-## $ duration    &lt;dbl&gt; 139, 380, 50, 517, 174, 353, 54, 164, 225, 1666, 137, 160…
-## $ campaign    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
-## $ pdays       &lt;dbl&gt; -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -…
-## $ previous    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
-## $ poutcome    &lt;fct&gt; unknown, unknown, unknown, unknown, unknown, unknown, unk…
-## $ y           &lt;fct&gt; no, no, no, no, no, no, no, no, no, no, no, no, no, no, n…</code></pre>
+<div id="membuat-workflow" class="section level2">
+<h2>Membuat Workflow</h2>
+<p>Jika sudah menentukan alur pemrosesan data dan algoritma yang akan digunakan, kita dapat menyatukannya menjadi 1 workflow.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Membuat Workflow</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a>workflow &lt;-<span class="st"> </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3"></a><span class="st">  </span><span class="kw">add_model</span>(nb_mod) <span class="op">%&gt;%</span></span>
+<span id="cb35-4"><a href="#cb35-4"></a><span class="st">  </span><span class="kw">add_recipe</span>(df_recipe)</span></code></pre></div>
+</div>
+<div id="training-dan-prediksi-ke-data-set" class="section level2">
+<h2>Training dan Prediksi ke data set</h2>
+<p>Jika workflow sudah sesuai dan berhasil dibuat, kita dapat langsung melakukan proses training dan melakukan prediksi pada data testing.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co"># Training Model</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a>nb &lt;-<span class="st"> </span><span class="kw">fit</span>(workflow, <span class="kw">training</span>(df_split))</span>
+<span id="cb36-3"><a href="#cb36-3"></a></span>
+<span id="cb36-4"><a href="#cb36-4"></a><span class="co"># Prediksi ke data test</span></span>
+<span id="cb36-5"><a href="#cb36-5"></a><span class="kw">head</span>(<span class="kw">predict</span>(nb, <span class="kw">testing</span>(df_split)))</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 1
+##   .pred_class
+##   &lt;fct&gt;      
+## 1 no         
+## 2 no         
+## 3 no         
+## 4 no         
+## 5 no         
+## 6 no</code></pre>
 </div>
 <div id="mengukur-performa-model" class="section level2">
 <h2>Mengukur Performa Model</h2>
-<p>Tahapan terakhir adalah mengecek seberapa baik model kita dalam melakukan prediksi.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># Define metric for evaluation</span></span>
-<span id="cb33-2"><a href="#cb33-2"></a>multi_metrics &lt;-<span class="st"> </span><span class="kw">metric_set</span>(accuracy, sensitivity, recall, f_meas)</span>
-<span id="cb33-3"><a href="#cb33-3"></a></span>
-<span id="cb33-4"><a href="#cb33-4"></a><span class="co"># See Performance Evaluation</span></span>
-<span id="cb33-5"><a href="#cb33-5"></a>df_bm_rf <span class="op">%&gt;%</span></span>
-<span id="cb33-6"><a href="#cb33-6"></a><span class="st">  </span><span class="kw">predict</span>(df_bm_testing) <span class="op">%&gt;%</span></span>
-<span id="cb33-7"><a href="#cb33-7"></a><span class="st">  </span><span class="kw">bind_cols</span>(df_bm_testing) <span class="op">%&gt;%</span></span>
-<span id="cb33-8"><a href="#cb33-8"></a><span class="st">  </span><span class="kw">multi_metrics</span>(<span class="dt">truth =</span> y, <span class="dt">estimate =</span> .pred_class)</span></code></pre></div>
+<p>Tahapan terakhir yang dilakukan yaitu melakukan penilaian model. Penilaian ini digunakan untuk mengukur seberapa baik model kita dalam memprediksi dengan membandingkan nilai hasil prediksi dengan nilai yang sebenarnya.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co"># Menentukan metrik evaluasi untuk mengukur performa model</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a>multi_metrics &lt;-<span class="st"> </span><span class="kw">metric_set</span>(accuracy, sensitivity, recall, f_meas)</span>
+<span id="cb38-3"><a href="#cb38-3"></a></span>
+<span id="cb38-4"><a href="#cb38-4"></a><span class="co"># Melihat performa model</span></span>
+<span id="cb38-5"><a href="#cb38-5"></a>nb <span class="op">%&gt;%</span></span>
+<span id="cb38-6"><a href="#cb38-6"></a><span class="st">  </span><span class="kw">predict</span>(df_testing) <span class="op">%&gt;%</span></span>
+<span id="cb38-7"><a href="#cb38-7"></a><span class="st">  </span><span class="kw">bind_cols</span>(df_testing) <span class="op">%&gt;%</span></span>
+<span id="cb38-8"><a href="#cb38-8"></a><span class="st">  </span><span class="kw">multi_metrics</span>(<span class="dt">truth =</span> y, <span class="dt">estimate =</span> .pred_class)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
 ##   .metric  .estimator .estimate
 ##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
-## 1 accuracy binary         0.908
-## 2 sens     binary         0.963
-## 3 recall   binary         0.963
-## 4 f_meas   binary         0.949</code></pre>
-<p>Dapat kita lihat ternyata Model kita memiki akurasi yang sangat baik, yaitu diatas 90%.</p>
+## 1 accuracy binary         0.877
+## 2 sens     binary         0.941
+## 3 recall   binary         0.941
+## 4 f_meas   binary         0.931</code></pre>
+<p>Ternyata, model yang kita bangun memiki akurasi yang cukup baik, yaitu diatas 80%. Begitu juga dengan nilai sensitivity dan recall.</p>
+</div>
+<div id="mengaplikasikan-model-ke-data-baru" class="section level2">
+<h2>Mengaplikasikan Model ke Data Baru</h2>
+<p>Langkah akhir dari pembuatan sebuah model yaitu menggunakan model yang telah dibentuk untuk memprediksi data baru. Pada modul ini, kita memiliki 10 data nasabah baru yang belum diketahui apakah pelanggan tersebut akan memilih untuk berlanganan deposito berjangka atau tidak. Kita akan menggunakan model yang sudah kita buat untuk memprediksinya.</p>
+<p>Data yang akan diprediksi terletak pada directory “data/raw” dengan nama “bank-marketing_new.csv”.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co"># Import data baru</span></span>
+<span id="cb40-2"><a href="#cb40-2"></a>df_new &lt;-<span class="st"> </span><span class="kw">read_csv2</span>(<span class="st">&quot;data/raw/bank-marketing_new.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## ℹ Using &#39;,&#39; as decimal and &#39;.&#39; as grouping mark. Use `read_delim()` for more control.</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   age = col_double(),
+##   job = col_character(),
+##   marital = col_character(),
+##   education = col_character(),
+##   default = col_character(),
+##   balance = col_double(),
+##   housing = col_character(),
+##   loan = col_character(),
+##   contact = col_character(),
+##   day = col_double(),
+##   month = col_character(),
+##   duration = col_double(),
+##   campaign = col_double(),
+##   pdays = col_double(),
+##   previous = col_double(),
+##   poutcome = col_character()
+## )</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="kw">head</span>(df_new)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 16
+##     age job   marital education default balance housing loan  contact   day
+##   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
+## 1    29 mana… single  tertiary  no          224 yes     no    cellul…    24
+## 2    41 mana… single  tertiary  no        11008 no      no    unknown    18
+## 3    55 serv… married secondary no         2476 yes     no    unknown     5
+## 4    22 mana… single  tertiary  no          104 no      yes   cellul…    18
+## 5    52 reti… married unknown   no          293 no      no    unknown    11
+## 6    30 blue… married secondary no            0 yes     yes   cellul…    10
+## # … with 6 more variables: month &lt;chr&gt;, duration &lt;dbl&gt;, campaign &lt;dbl&gt;,
+## #   pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;</code></pre>
+<p>Dapat kita lihat bahwa belum ada kolom yang menyatakan bahwa pelanggan tersebut berlanggan deposito berjangka atu tidak. Untuk melakukan prediksi kita dapat langsung menggunakan fungsi <code>predict</code> ke data baru kita.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="co"># Melakukan prediksi dan menyimpan nilai hasil prediksi</span></span>
+<span id="cb45-2"><a href="#cb45-2"></a>df_predicted &lt;-<span class="st"> </span><span class="kw">predict</span>(nb, df_new) <span class="op">%&gt;%</span></span>
+<span id="cb45-3"><a href="#cb45-3"></a><span class="st">  </span><span class="kw">bind_cols</span>(df_new) <span class="op">%&gt;%</span></span>
+<span id="cb45-4"><a href="#cb45-4"></a><span class="st">  </span><span class="kw">write_csv</span>(<span class="st">&quot;data/predicted/bank-marketing_predicted.csv&quot;</span>)</span>
+<span id="cb45-5"><a href="#cb45-5"></a></span>
+<span id="cb45-6"><a href="#cb45-6"></a><span class="co"># Menampilkan hasil prediksi</span></span>
+<span id="cb45-7"><a href="#cb45-7"></a><span class="kw">print</span>(df_predicted)</span></code></pre></div>
+<pre><code>## # A tibble: 10 x 17
+##    .pred_class   age job   marital education default balance housing loan 
+##    &lt;fct&gt;       &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;
+##  1 yes            29 mana… single  tertiary  no          224 yes     no   
+##  2 yes            41 mana… single  tertiary  no        11008 no      no   
+##  3 no             55 serv… married secondary no         2476 yes     no   
+##  4 yes            22 mana… single  tertiary  no          104 no      yes  
+##  5 no             52 reti… married unknown   no          293 no      no   
+##  6 no             30 blue… married secondary no            0 yes     yes  
+##  7 no             26 stud… single  tertiary  no           39 no      no   
+##  8 no             35 mana… married tertiary  no          323 no      no   
+##  9 no             31 mana… divorc… tertiary  no          373 no      no   
+## 10 yes            38 mana… married tertiary  no          238 no      no   
+## # … with 8 more variables: contact &lt;chr&gt;, day &lt;dbl&gt;, month &lt;chr&gt;,
+## #   duration &lt;dbl&gt;, campaign &lt;dbl&gt;, pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;</code></pre>
+<p>dari 10 nasabah baru, ternyata ada 4 orang nasbah yang diprediksi akan berlangganan deposito berjangka, sedangkan 6 lainnya diprediksi tidak akan berlangganan deposito berjangka.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># Siapa yang akan berlangganan</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a>df_subscribe &lt;-<span class="st"> </span>df_predicted <span class="op">%&gt;%</span></span>
+<span id="cb47-3"><a href="#cb47-3"></a><span class="st">  </span><span class="kw">filter</span>(.pred_class <span class="op">==</span><span class="st"> &quot;yes&quot;</span>)</span>
+<span id="cb47-4"><a href="#cb47-4"></a></span>
+<span id="cb47-5"><a href="#cb47-5"></a><span class="kw">print</span>(df_subscribe)</span></code></pre></div>
+<pre><code>## # A tibble: 4 x 17
+##   .pred_class   age job   marital education default balance housing loan 
+##   &lt;fct&gt;       &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;
+## 1 yes            29 mana… single  tertiary  no          224 yes     no   
+## 2 yes            41 mana… single  tertiary  no        11008 no      no   
+## 3 yes            22 mana… single  tertiary  no          104 no      yes  
+## 4 yes            38 mana… married tertiary  no          238 no      no   
+## # … with 8 more variables: contact &lt;chr&gt;, day &lt;dbl&gt;, month &lt;chr&gt;,
+## #   duration &lt;dbl&gt;, campaign &lt;dbl&gt;, pdays &lt;dbl&gt;, previous &lt;dbl&gt;, poutcome &lt;chr&gt;</code></pre>
+</div>
+<div id="praktik" class="section level2">
+<h2>Praktik</h2>
+<p>Teman-teman sudah memahami teknik-teknik dalam proses pembuatan model machine learning. Sama seperti sebelumnya, saatnya kita meangaplikasikan teknik tersebut pada kasus yang baru. Kita akan menggunakan dataset telco customer churn yang sama seperti modul-modul sebelumnya.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="co"># Import Customer Churn Dataset</span></span>
+<span id="cb49-2"><a href="#cb49-2"></a>df_churn &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/raw/customer-churn.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_character(),
+##   SeniorCitizen = col_double(),
+##   tenure = col_double(),
+##   MonthlyCharges = col_double(),
+##   TotalCharges = col_double()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+<div id="soal" class="section level3">
+<h3>Soal</h3>
+<p>Sebagai seorang data scientist di perusahaan telekomunikasi tersebut, kita diminta oleh management untuk membuat model machine learning untuk memprediksi cutomer churn dan kemudian melakukan prediksi pada data customer baru yang terdapat di dalam file “customer-churn_new.csv” pada direktori “data/raw”.</p>
+<p>Dari 10 pelanggan baru, berapa pelanggankah yang diprediksi akan churn?</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a><span class="co"># Jawaban</span></span></code></pre></div>
+</div>
 </div>
     </section>
   </div>

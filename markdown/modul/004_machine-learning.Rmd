@@ -2,6 +2,7 @@
 title: "Modul 4: Machine Learning"
 author: "Big Data and Business Analytics Laboratory, SBM-ITB"
 output:
+  prettydoc::html_pretty:
     theme: architect
     highlight: github
 editor_options: 
