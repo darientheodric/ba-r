@@ -204,29 +204,114 @@ code span.ot { color: #007020; }
     <section id="main-content">
 <div id="selamat-datang-di-r" class="section level2">
 <h2>Selamat Datang di R</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#</span></span></code></pre></div>
+<p>Di modul kali ini kita akan belajar dasar - dasar pemrograman R. Seperti yang sudah dijelaskan di R ada beberapa tipe file untuk menjalankan kodingan R yaitu R script dan R Markdown. Dikeseluruhan modul kita akan menggunakan format R Markdown. Di format R Markdown code R dijalankan pada cell yang dikatakan chunk. untuk menabahkan chunk bisa mnggunakan tab insert atau menekan tombol <code>ctrl + alt + i</code> untuk windows atau <code>command + alt + i</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Ini adalah chunk</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">print</span>(<span class="st">&quot;ini adalah chunk&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;ini adalah chunk&quot;</code></pre>
+<p>Sekarang kamu sudah mengetahui cara menuliskan dan menjalankan kode R . Mari kita mulai berkenalan dengan R</p>
+</div>
+<div id="operasi-aritmatik" class="section level2">
+<h2>Operasi Aritmatik</h2>
+<p>Seperti bahasa pemrograman lainnya, R dapat melakukan operasi matematik seperti, pertambahan, pengurangan, perkalian, dan lainnya.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Pertambahan</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="dv">5</span> <span class="op">+</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Pengurangan</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="dv">5</span> <span class="op">-</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Perkalian</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="dv">3</span> <span class="op">*</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Pembagian</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="dv">5</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span> </span></code></pre></div>
+<pre><code>## [1] 2.5</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Pangkat</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] 32</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Modulo</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="dv">28</span> <span class="op">%%</span><span class="st"> </span><span class="dv">6</span></span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+</div>
+<div id="variable-assignment" class="section level2">
+<h2>Variable Assignment</h2>
+<p>R memungkinkan kita menyimpan nilai dalam bentuk variable, untuk melakukannya kita dapat menggunakan notasi “&lt;-” atau “=”.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Contol membuat variabel dengan notasi &quot;&lt;-&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>contoh_variabel &lt;-<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co"># Print nilai variabel</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="kw">print</span>(contoh_variabel)</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Contol membuat variabel dengan notasi &quot;=&quot;</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>contoh_variabel_<span class="dv">2</span> =<span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Contoh menggunakan variable untuk operasi aritmatik</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>harga &lt;-<span class="st"> </span><span class="dv">2000</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>kuantitas &lt;-<span class="st"> </span><span class="dv">3</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a></span>
+<span id="cb18-5"><a href="#cb18-5"></a>jumlah_kuantitas &lt;-<span class="st"> </span>harga <span class="op">*</span><span class="st"> </span>kuantitas</span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="kw">print</span>(jumlah_kuantitas)</span></code></pre></div>
+<pre><code>## [1] 6000</code></pre>
 </div>
 <div id="tipe-data" class="section level2">
 <h2>Tipe Data</h2>
-<p>R memiliki 5 tipe data yaitu</p>
-<ul>
-<li>Character</li>
-<li>Numeric (real or decimal)</li>
-<li>Integer</li>
-<li>Logical</li>
-<li>Complex</li>
-</ul>
+<p>R memiliki 5 tipe data yaitu Numeric, Integer, Character, Logical, Complex.</p>
 <div id="numeric" class="section level3">
 <h3>Numeric</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># </span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Contoh tipe data numerik</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>n &lt;-<span class="st"> </span><span class="fl">1.2</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="co"># Melihat tipe data</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="kw">class</span>(n)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
 </div>
 <div id="integer" class="section level3">
 <h3>Integer</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># </span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Contoh tipe data Integer</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>i &lt;-<span class="st"> </span>2L</span>
+<span id="cb22-3"><a href="#cb22-3"></a></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="co"># Melihat tipe data</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="kw">class</span>(i)</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Mengkonversi data numerik menjadi integer</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>i_from_n &lt;-<span class="st"> </span><span class="kw">as.integer</span>(n)</span>
+<span id="cb24-3"><a href="#cb24-3"></a></span>
+<span id="cb24-4"><a href="#cb24-4"></a><span class="co"># Melihat nilai </span></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="kw">print</span>(i_from_n)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Melihat tipe data</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="kw">class</span>(i_from_n)</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+</div>
+<div id="character" class="section level3">
+<h3>Character</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># Contoh tipe data character</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>c &lt;-<span class="st"> &quot;SBM - ITB&quot;</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a></span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="co"># Melihat tipe data</span></span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="kw">class</span>(c)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+</div>
+<div id="logical" class="section level3">
+<h3>Logical</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co"># Contoh tipe data character</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>l &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="co"># Melihat tipe data</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a><span class="kw">class</span>(l)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+</div>
+<div id="complex" class="section level3">
+<h3>Complex</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co"># Contoh tipe data complex</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>com &lt;-<span class="st"> </span><span class="dv">3</span> <span class="op">+</span><span class="st"> </span>2i</span>
+<span id="cb32-3"><a href="#cb32-3"></a></span>
+<span id="cb32-4"><a href="#cb32-4"></a><span class="co"># Melihat tipe data</span></span>
+<span id="cb32-5"><a href="#cb32-5"></a><span class="kw">class</span>(com)</span></code></pre></div>
+<pre><code>## [1] &quot;complex&quot;</code></pre>
 </div>
 </div>
 <div id="struktur-data" class="section level2">
 <h2>Struktur Data</h2>
+<p>R memiliki beberapa struktur data yaitu:</p>
 <ul>
 <li>Vectors</li>
 <li>Lists</li>
@@ -235,6 +320,177 @@ code span.ot { color: #007020; }
 <li>Factors</li>
 <li>Data Frames</li>
 </ul>
+<div id="vektor" class="section level3">
+<h3>Vektor</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co"># Contoh Vektor</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>v &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="kw">class</span>(v)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+</div>
+<div id="list" class="section level3">
+<h3>List</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>l &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;a&quot;</span>, <span class="ot">TRUE</span>, <span class="dv">1</span><span class="op">+</span>4i)</span>
+<span id="cb36-2"><a href="#cb36-2"></a><span class="kw">class</span>(l)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+</div>
+<div id="matrix" class="section level3">
+<h3>Matrix</h3>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co"># Contoh Matrix</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a>m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>))</span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="kw">class</span>(m)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+</div>
+<div id="factor" class="section level3">
+<h3>Factor</h3>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="co"># Contoh Factor</span></span>
+<span id="cb40-2"><a href="#cb40-2"></a>f &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;good&quot;</span>, <span class="st">&quot;bad&quot;</span>, <span class="st">&quot;ugly&quot;</span>,<span class="st">&quot;good&quot;</span>, <span class="st">&quot;bad&quot;</span>, <span class="st">&quot;ugly&quot;</span>))</span>
+<span id="cb40-3"><a href="#cb40-3"></a><span class="kw">class</span>(f)</span></code></pre></div>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+</div>
+<div id="dataframe" class="section level3">
+<h3>Dataframe</h3>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb42-2"><a href="#cb42-2"></a>   <span class="dt">Person =</span> <span class="kw">c</span>(<span class="st">&quot;Aditya&quot;</span>, <span class="st">&quot;Ayush&quot;</span>,<span class="st">&quot;Akshay&quot;</span>),</span>
+<span id="cb42-3"><a href="#cb42-3"></a>   <span class="dt">Age =</span> <span class="kw">c</span>(<span class="dv">26</span>, <span class="dv">26</span>, <span class="dv">27</span>),</span>
+<span id="cb42-4"><a href="#cb42-4"></a>   <span class="dt">Weight =</span> <span class="kw">c</span>(<span class="dv">81</span>,<span class="dv">85</span>, <span class="dv">90</span>),</span>
+<span id="cb42-5"><a href="#cb42-5"></a>   <span class="dt">Height =</span> <span class="kw">c</span>(<span class="dv">6</span>,<span class="fl">5.8</span>,<span class="fl">6.2</span>),</span>
+<span id="cb42-6"><a href="#cb42-6"></a>   <span class="dt">Salary =</span> <span class="kw">c</span>(<span class="dv">50000</span>, <span class="dv">80000</span>, <span class="dv">100000</span>)</span>
+<span id="cb42-7"><a href="#cb42-7"></a>)</span>
+<span id="cb42-8"><a href="#cb42-8"></a></span>
+<span id="cb42-9"><a href="#cb42-9"></a><span class="kw">class</span>(df)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+</div>
+</div>
+<div id="fungsi" class="section level2">
+<h2>Fungsi</h2>
+<p>Fungsi merupakan sekumpulan baris perintah atau kode yang disusun bersama untuk melakukan tugas tertentu. Di R kita dapat menggunakan fungsi bawaan atau membuat fungsi baru.</p>
+<div id="fungsi-bawaan" class="section level3">
+<h3>Fungsi Bawaan</h3>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co"># Membuat Vektor Usia</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a>usia &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">21</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">14</span>, <span class="dv">15</span>)</span>
+<span id="cb44-3"><a href="#cb44-3"></a></span>
+<span id="cb44-4"><a href="#cb44-4"></a><span class="co"># Menghitung rata-rata usia</span></span>
+<span id="cb44-5"><a href="#cb44-5"></a><span class="kw">mean</span>(usia)</span></code></pre></div>
+<pre><code>## [1] 16.14286</code></pre>
+</div>
+<div id="membuat-fungsi" class="section level3">
+<h3>Membuat Fungsi</h3>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="co"># Membuat fungsi untuk mengitung BMI</span></span>
+<span id="cb46-2"><a href="#cb46-2"></a>hitung_bmi &lt;-<span class="st">  </span><span class="cf">function</span>(tinggi,berat){</span>
+<span id="cb46-3"><a href="#cb46-3"></a> <span class="kw">return</span>(berat<span class="op">/</span>(tinggi<span class="op">^</span><span class="dv">2</span>))</span>
+<span id="cb46-4"><a href="#cb46-4"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># Menggunakan fungsi yang sudah dibuat</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="kw">hitung_bmi</span>(<span class="dt">tinggi =</span> <span class="fl">1.57</span>, <span class="dt">berat =</span> <span class="dv">63</span>)</span></code></pre></div>
+<pre><code>## [1] 25.55885</code></pre>
+</div>
+</div>
+<div id="percabangan" class="section level2">
+<h2>Percabangan</h2>
+<p>Percabangan merupakan fitur pemrograman untuk melakukan tindakan yang berbeda tergantung pada apakah kondisi boolean yang ditentukan. Berikut ini merupakan contoh-contoh percabangan</p>
+<div id="if-statement" class="section level3">
+<h3>If Statement</h3>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="co"># contoh If Statement</span></span>
+<span id="cb49-2"><a href="#cb49-2"></a>var_if &lt;-<span class="st"> </span>30L</span>
+<span id="cb49-3"><a href="#cb49-3"></a></span>
+<span id="cb49-4"><a href="#cb49-4"></a><span class="cf">if</span>(<span class="kw">is.integer</span>(var_if)) {</span>
+<span id="cb49-5"><a href="#cb49-5"></a>   <span class="kw">print</span>(<span class="st">&quot;X is an Integer&quot;</span>)</span>
+<span id="cb49-6"><a href="#cb49-6"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;X is an Integer&quot;</code></pre>
+</div>
+<div id="else-statement" class="section level3">
+<h3>Else Statement</h3>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a><span class="co"># Contoh Else Statement</span></span>
+<span id="cb51-2"><a href="#cb51-2"></a>kampus_bandung &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ITB&quot;</span>,<span class="st">&quot;UNPAD&quot;</span>,<span class="st">&quot;UNISBA&quot;</span>)</span>
+<span id="cb51-3"><a href="#cb51-3"></a></span>
+<span id="cb51-4"><a href="#cb51-4"></a><span class="cf">if</span>(<span class="st">&quot;ITB&quot;</span> <span class="op">%in%</span><span class="st"> </span>kampus_bandung) {</span>
+<span id="cb51-5"><a href="#cb51-5"></a>   <span class="kw">print</span>(<span class="st">&quot;ITB ada didalam daftar kampus di Bandung&quot;</span>)</span>
+<span id="cb51-6"><a href="#cb51-6"></a>} <span class="cf">else</span> {</span>
+<span id="cb51-7"><a href="#cb51-7"></a>   <span class="kw">print</span>(<span class="st">&quot;ITB tidak ada didalam daftar kampus di Bandung&quot;</span>)</span>
+<span id="cb51-8"><a href="#cb51-8"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;ITB ada didalam daftar kampus di Bandung&quot;</code></pre>
+</div>
+<div id="if-else-statement" class="section level3">
+<h3>If-Else Statement</h3>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="co"># Contoh If Else Statement</span></span>
+<span id="cb53-2"><a href="#cb53-2"></a></span>
+<span id="cb53-3"><a href="#cb53-3"></a><span class="cf">if</span>(<span class="st">&quot;Institiut Teknologi Bandung&quot;</span> <span class="op">%in%</span><span class="st"> </span>kampus_bandung) {</span>
+<span id="cb53-4"><a href="#cb53-4"></a>   <span class="kw">print</span>(<span class="st">&quot;ITB ada didalam daftar kampus di Bandung&quot;</span>)</span>
+<span id="cb53-5"><a href="#cb53-5"></a>} <span class="cf">else</span> <span class="cf">if</span> (<span class="st">&quot;ITB&quot;</span> <span class="op">%in%</span><span class="st"> </span>kampus_bandung) {</span>
+<span id="cb53-6"><a href="#cb53-6"></a>   <span class="kw">print</span>(<span class="st">&quot;ITB ada didalam daftar kampus di Bandung&quot;</span>)</span>
+<span id="cb53-7"><a href="#cb53-7"></a>} <span class="cf">else</span> {</span>
+<span id="cb53-8"><a href="#cb53-8"></a>   <span class="kw">print</span>(<span class="st">&quot;ITB tidak ada didalam daftar kampus di Bandung&quot;</span>)</span>
+<span id="cb53-9"><a href="#cb53-9"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;ITB ada didalam daftar kampus di Bandung&quot;</code></pre>
+</div>
+</div>
+<div id="perulangan-atau-loop" class="section level2">
+<h2>Perulangan atau Loop</h2>
+<p>Perulangan atau looo merupakan sebuah urutan perintah yang secara menerus diulang hingga suatu kondisi tercapai. Ada 2 tipe loop yang umum digunakan yaitu for loop dan whiile loop.</p>
+<div id="for-loop" class="section level3">
+<h3>For Loop</h3>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>for_loop &lt;-<span class="st"> </span>LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</span>
+<span id="cb55-2"><a href="#cb55-2"></a><span class="cf">for</span> ( i <span class="cf">in</span> for_loop) {</span>
+<span id="cb55-3"><a href="#cb55-3"></a>   <span class="kw">print</span>(i)</span>
+<span id="cb55-4"><a href="#cb55-4"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;A&quot;
+## [1] &quot;B&quot;
+## [1] &quot;C&quot;
+## [1] &quot;D&quot;</code></pre>
+</div>
+<div id="while-loop" class="section level3">
+<h3>While Loop</h3>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>while_loop &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;SBM&quot;</span>,<span class="st">&quot;ITB&quot;</span>)</span>
+<span id="cb57-2"><a href="#cb57-2"></a>hitungan &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb57-3"><a href="#cb57-3"></a></span>
+<span id="cb57-4"><a href="#cb57-4"></a><span class="cf">while</span> (hitungan <span class="op">&lt;</span><span class="st"> </span><span class="dv">7</span>) {</span>
+<span id="cb57-5"><a href="#cb57-5"></a>   <span class="kw">print</span>(while_loop)</span>
+<span id="cb57-6"><a href="#cb57-6"></a>   hitungan =<span class="st"> </span>hitungan <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb57-7"><a href="#cb57-7"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;SBM&quot; &quot;ITB&quot;
+## [1] &quot;SBM&quot; &quot;ITB&quot;
+## [1] &quot;SBM&quot; &quot;ITB&quot;
+## [1] &quot;SBM&quot; &quot;ITB&quot;
+## [1] &quot;SBM&quot; &quot;ITB&quot;
+## [1] &quot;SBM&quot; &quot;ITB&quot;
+## [1] &quot;SBM&quot; &quot;ITB&quot;</code></pre>
+</div>
+</div>
+<div id="package" class="section level2">
+<h2>Package</h2>
+<p>R Package merupakan kumpulan fungsi/function atau data yang ada di R. Ada banyak package yang dibuat/dikembangkan oleh pengguna lainnya. Berikut contoh-contoh package yang umum digunakan. Untuk dapat menggunakan fungsi yang ada pada suatu package, kita harus menginstall dan memuat packagenya terlebih dahulu.</p>
+<div id="readr" class="section level3">
+<h3>Readr</h3>
+<p>Package readr berguna untuk mengimport data dengan format .csv atau format lain kedalam environtment R.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="co"># Install library</span></span>
+<span id="cb59-2"><a href="#cb59-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;readr&quot;</span>)</span></code></pre></div>
+<pre><code>## Installing package into &#39;/home/rstudio-user/R/x86_64-pc-linux-gnu-library/4.0&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a><span class="co"># Load library</span></span>
+<span id="cb61-2"><a href="#cb61-2"></a><span class="kw">library</span>(readr)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co"># Mengimport Dataset &quot;iris.csv&quot; dari direktori &quot;data/raw&quot;</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a>df_csv &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/raw/iris.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   Sepal.Length = col_double(),
+##   Sepal.Width = col_double(),
+##   Petal.Length = col_double(),
+##   Petal.Width = col_double(),
+##   Species = col_character()
+## )</code></pre>
+</div>
+<div id="readxl" class="section level3">
+<h3>Readxl</h3>
+<p>Package readxl berguna untuk mengimport data dengan format .xlsx atau .xls kedalam environtment R.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="co"># Install library</span></span>
+<span id="cb64-2"><a href="#cb64-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</span></code></pre></div>
+<pre><code>## Installing package into &#39;/home/rstudio-user/R/x86_64-pc-linux-gnu-library/4.0&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="co"># Load library</span></span>
+<span id="cb66-2"><a href="#cb66-2"></a><span class="kw">library</span>(readxl)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="co"># Mengimport Dataset &quot;iris.xlsx&quot; dari direktori &quot;data/raw&quot;</span></span>
+<span id="cb67-2"><a href="#cb67-2"></a>df_xlsx &lt;-<span class="st"> </span><span class="kw">read_xlsx</span>(<span class="st">&quot;data/raw/iris.xlsx&quot;</span>)</span></code></pre></div>
+</div>
 </div>
     </section>
   </div>

@@ -15,57 +15,133 @@ knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
 ## Selamat Datang di R
+Di modul kali ini kita akan belajar dasar - dasar pemrograman R. Seperti yang sudah dijelaskan di R ada beberapa tipe file untuk menjalankan kodingan R yaitu R script dan R Markdown. Keseluruhan modul kita akan menggunakan format R Markdown. Di format R Markdown code R dijalankan pada cell yang dikatakan chunk. Untuk menambahkan chunk bisa menggunakan tab insert atau menekan tombol ```ctrl + alt + i``` untuk windows atau ```command + alt + i``` 
 
 ```{r}
-#
+# Ini adalah chunk
+print("ini adalah chunk")
 ```
 
-## Tipe Data
+Sekarang kamu sudah mengetahui cara menuliskan dan menjalankan kode R. Mari kita mulai berkenalan dengan R.
 
-R memiliki 5 tipe data yaitu
-
-- Character
-- Numeric (real or decimal)
-- Integer
-- Logical
-- Complex
-
-
-### Numeric
+## Operasi Aritmatik
+Seperti bahasa  pemrograman lainnya, R dapat  melakukan operasi matematika seperti, pertambahan, pengurangan, perkalian, dan lainnya. 
 
 ```{r}
-num <- 1.2
-class(num)
+# Pertambahan
+5 + 5
+```
+
+```{r}
+# Pengurangan
+5 - 5
+```
+
+```{r}
+# Perkalian
+3 * 5
+```
+
+```{r}
+# Pembagian
+5 / 2
+```
+
+```{r}
+# Pangkat
+2^5
+```
+
+```{r}
+# Modulo
+28 %% 6
+```
+
+## Variable Assignment
+R memungkinkan kita menyimpan nilai dalam bentuk variable, untuk melakukannya kita dapat menggunakan  ```<-``` atau ```=```.
+
+```{r}
+# Contoh membuat variabel dengan  "<-"
+contoh_variabel <- 4
+
+# Print nilai variabel
+print(contoh_variabel)
+```
+
+```{r}
+# Contol membuat variabel dengan  "="
+contoh_variabel_2 = 2
+```
+
+```{r}
+# Contoh penggunaan variabel
+harga <- 2000
+kuantitas <- 3
+
+jumlah_kuantitas <- harga * kuantitas
+print(jumlah_kuantitas)
+```
+## Tipe Data
+R memiliki 5 tipe data utama yaitu Numeric, Integer, Character, Logical, Complex. Berikut contoh masing-masing tipe data
+
+### Numeric
+```{r}
+# Contoh tipe data numerik
+n <- 1.2
+
+# Melihat tipe data
+class(n)
 ```
 
 ### Integer
+```{r}
+# Contoh tipe data Integer
+i <- 2L
+
+# Melihat tipe data
+class(i)
+```
 
 ```{r}
-int <- 2L
-class(int)
+# Mengkonversi data numerik menjadi integer
+i_from_n <- as.integer(n)
+
+# Melihat nilai
+print(i_from_n)
+
+# Melihat tipe data
+class(i_from_n)
 ```
 
 ### Character
-
 ```{r}
-char <- "datacamp"
-class(char)
+# Contoh tipe data character
+c <- "SBM - ITB"
+
+# Melihat tipe data
+class(c)
 ```
 
 ### Logical
-
 ```{r}
-log_true <- TRUE
-class(log_true)
-```
+# Contoh tipe data character
+l <- TRUE
 
+# Melihat tipe data
+class(l)
+```
 ### Complex
-
 ```{r}
-complex = 4 + 3i
-class(complex)
+# Contoh tipe data complex
+com <- 3 + 2i
+
+# Melihat tipe data
+class(com)
 ```
+
 ## Struktur Data
+R memiliki beberapa struktur data yaitu:
+
 - Vectors
 - Lists
 - Matrices
@@ -73,7 +149,166 @@ class(complex)
 - Factors
 - Data Frames
 
+### Vektor 
 ```{r}
-
+# Contoh Vektor
+v <- c(1, 2, 3)
+class(v)
 ```
 
+### List
+```{r}
+l <- list(1, "a", TRUE, 1 + 4i)
+class(l)
+```
+
+### Matrix 
+```{r}
+# Contoh Matrix
+m <- matrix(c(1:3))
+class(m)
+```
+
+### Factor
+```{r}
+# Contoh Factor
+f <- factor(c("good", "bad", "ugly", "good", "bad", "ugly"))
+class(f)
+```
+
+### Dataframe
+```{r}
+df <- data.frame(
+  Person = c("Aditya", "Ayush", "Akshay"),
+  Age = c(26, 26, 27),
+  Weight = c(81, 85, 90),
+  Height = c(6, 5.8, 6.2),
+  Salary = c(50000, 80000, 100000)
+)
+
+class(df)
+```
+
+## Fungsi
+Fungsi merupakan sekumpulan baris perintah atau kode yang disusun bersama untuk melakukan tugas tertentu. Di R kita dapat menggunakan fungsi bawaan atau membuat fungsi baru.
+
+### Fungsi Bawaan
+```{r}
+# Membuat Vektor Usia
+usia <- c(22, 23, 21, 8, 10, 14, 15)
+
+# Menghitung rata-rata usia
+mean(usia)
+```
+
+### Membuat Fungsi
+```{r}
+# Membuat fungsi untuk mengitung BMI
+hitung_bmi <- function(tinggi, berat) {
+  return(berat / (tinggi^2))
+}
+```
+
+```{r}
+# Menggunakan fungsi yang sudah dibuat
+hitung_bmi(tinggi = 1.57, berat = 63)
+```
+
+## Percabangan 
+Percabangan merupakan fitur pemrograman untuk melakukan tindakan/perintah yang berbeda tergantung pada apakah kondisi boolean yang ditentukan. Berikut ini merupakan contoh-contoh percabangan
+
+### If Statement
+```{r}
+# contoh If Statement
+var_if <- 30L
+
+if (is.integer(var_if)) {
+  print("X is an Integer")
+}
+```
+
+### Else Statement
+```{r}
+# Contoh Else Statement
+kampus_bandung <- c("ITB", "UNPAD", "UNISBA")
+
+if ("ITB" %in% kampus_bandung) {
+  print("ITB ada didalam daftar kampus di Bandung")
+} else {
+  print("ITB tidak ada didalam daftar kampus di Bandung")
+}
+```
+
+### If-Else Statement
+```{r}
+# Contoh If Else Statement
+
+if ("Institiut Teknologi Bandung" %in% kampus_bandung) {
+  print("ITB ada didalam daftar kampus di Bandung")
+} else if ("ITB" %in% kampus_bandung) {
+  print("ITB ada didalam daftar kampus di Bandung")
+} else {
+  print("ITB tidak ada didalam daftar kampus di Bandung")
+}
+```
+
+## Perulangan atau Loop
+Perulangan atau loop merupakan sebuah urutan perintah yang secara menerus diulang hingga suatu kondisi tercapai. Ada 2 tipe loop yang umum digunakan yaitu for loop dan whiile loop. 
+
+### For Loop
+```{r}
+for_loop <- LETTERS[1:4]
+for (i in for_loop) {
+  print(i)
+}
+```
+
+### While Loop
+```{r}
+while_loop <- c("SBM", "ITB")
+hitungan <- 0
+
+while (hitungan < 7) {
+  print(while_loop)
+  hitungan <- hitungan + 1
+}
+```
+
+## Package
+R Package merupakan kumpulan fungsi/function atau data yang ada di R. Ada banyak package yang dibuat/dikembangkan oleh pengguna lainnya. Berikut contoh-contoh package yang umum digunakan. Untuk dapat menggunakan fungsi yang ada pada suatu package, kita harus menginstall dan memuat packagenya terlebih dahulu. 
+
+### Readr
+Package readr berguna untuk mengimport data dengan format .csv atau format lain kedalam environtment R.
+
+```{r}
+# Install package
+install.packages("readr")
+```
+
+```{r}
+# Load package
+library(readr)
+```
+
+```{r}
+# Mengimport Dataset "iris.csv" dari direktori "data/raw"
+df_csv <- read_csv("data/raw/iris.csv")
+```
+
+### Readxl
+Package readxl berguna untuk mengimport data dengan format .xlsx atau .xls kedalam environtment R.
+
+```{r}
+# Install package
+install.packages("readxl")
+```
+
+```{r}
+# Load package
+library(readxl)
+```
+
+```{r}
+# Mengimport Dataset "iris.xlsx" dari direktori "data/raw"
+df_xlsx <- read_xlsx("data/raw/iris.xlsx")
+```

@@ -22,17 +22,17 @@ Di modul kali in kita akan belajar melakukan visualisasi data menggunakan R. Dat
 Untuk dapat melakukan visualisasi data. Kita harus mengimport datanya terlebih dahulu. 
 
 ```{r}
-# Load library readr
+# Load Package readr
 library(readr)
 
-# Import data bank-marketing.csv from data/raw directory
+# Import data bank-marketing.csv dari direktori data/raw
 df <- read_csv2("data/raw/bank-marketing.csv")
 ```
 
-Setelah kita mengimport datasetnya, kita bisa melihat rangkuman informasi dataset tersebut menggunakan fungsi glimpse dari library ```dplyr``` yang sudah kita pelajari di modul sebelumnya. 
+Setelah kita mengimport datasetnya, kita bisa melihat rangkuman informasi dataset tersebut menggunakan fungsi glimpse dari Package ```dplyr``` yang sudah kita pelajari di modul sebelumnya. 
 
 ```{r}
-# Load library readr
+# Load package readr
 library(dplyr)
 
 # Melihat rangkuman data
@@ -41,7 +41,7 @@ glimpse(df)
 
 ## Visualisasi data menggunakan base R
 
-Pada dasarnya di R kita dapat melakukan visualiasi tanpa library apapun.
+Pada dasarnya di R kita dapat melakukan visualiasi tanpa Package apapun.
 
 ### Histogram
 
@@ -52,18 +52,18 @@ Kita dapat melakukan visualisasi histogram untuk melihat distribusi umur nasabah
 hist(df$age)
 ```
 
-Sayangnya visualisasi ini menggunakan base R terbatas, dan hasil visualisasinya juga kurang menarik. Untungnya di R ada sebuah library visualisasi data yang sangat mumpuni yaitu ```ggplot2```.
+Sayangnya visualisasi ini menggunakan base R terbatas, dan hasil visualisasinya juga kurang menarik. Untungnya di R ada sebuah Package visualisasi data yang sangat mumpuni yaitu ```ggplot2```.
 
 ## Visualisasi data menggunakan ggplot2
-ggplot2 merupakan library untuk visualisasi data yang juga diciptakan oleh Hadley Wickham. ```ggplot2``` memiliki kelebihan dalam pembuatan grafik visualisasi data yang elegan dan kompleks. Sebelum itu kita harus menginstall dan memuat library ```ggplot2``` kedalam R environtment kita kita terlebih dahulu.  
+ggplot2 merupakan Package untuk visualisasi data yang juga diciptakan oleh Hadley Wickham. ```ggplot2``` memiliki kelebihan dalam pembuatan grafik visualisasi data yang elegan dan kompleks. Sebelum itu kita harus menginstall dan memuat Package ```ggplot2``` kedalam R environtment kita kita terlebih dahulu.  
 
 ```{r}
-# Install library
+# Install Package
 install.packages("ggplot2")
 ```
 
 ```{r}
-# Load library
+# Load Package
 library(ggplot2)
 ```
 
@@ -175,12 +175,12 @@ ggplot(data = df, aes(x = y, fill = y)) +
 ### Membuat Interaktif dengan Plotly
 
 ```{r message=FALSE, warning=FALSE}
-# Load library Plotly
+# Load package Plotly
 library(plotly)
 ```
 
 ```{r eval=FALSE, include=TRUE}
-# Interaktif Chart
+# Chart interaktif
 line_chart <- ggplot(data = df, aes(x = duration, y = balance)) +
   geom_line(colour = "#00bfc4")
 
@@ -188,19 +188,19 @@ ggplotly(line_chart)
 ```
 
 ## Praktek
-Sekarang teman-teman sudah paham teknik-teknik melakukan visualisasi data menggunakan library ```ggplo2```. Sama seperti sebelumnya, saatnya kita meangaplikasikan ke kasus baru. Kita akan menggunakan dataset telco customer churn dataset sama seperti modul sebelumnya. 
+Sekarang teman-teman sudah paham teknik-teknik melakukan visualisasi data menggunakan Package ```ggplo2```. Sama seperti sebelumnya, saatnya kita meangaplikasikan ke kasus baru. Kita akan menggunakan dataset telco customer churn dataset sama seperti modul sebelumnya. 
 
 ```{r}
-# Import Customer Churn Dataset
+# Import dataset Telco Customer Churn 
 df_churn <- read_csv("data/raw/customer-churn.csv")
 ```
 
 ### Soal
-Sama seperti praktek sebelumnya teman-teman merupakan seorang data scientist diperusahaan telekomunikasi seperti yang sudah diceritakan sebelumnya. Teman-teman diminta untuk menjawab pertanyaan yang ajukan manajemen, kali ini dalam bentuk visualisasi data menggunakan library ```ggplot```. 
+Sama seperti praktek sebelumnya teman-teman merupakan seorang data scientist diperusahaan telekomunikasi seperti yang sudah diceritakan sebelumnya. Teman-teman diminta untuk menjawab pertanyaan yang ajukan manajemen, kali ini dalam bentuk visualisasi data menggunakan Package ```ggplot```. 
 
 ### Contoh Soal: Visualisasikan banyaknya pelanggan yang churn dan tidak
 ```{r}
-# Answer
+# Jawaban
 ggplot(data = df_churn, aes(x = Churn, fill = Churn)) +
   geom_bar()
 ```
@@ -208,25 +208,25 @@ ggplot(data = df_churn, aes(x = Churn, fill = Churn)) +
 #### Soal 1: Visualisasikan jumlah pelanggan pada masing-masing tipe kontrak
 
 ```{r}
-# Answer to Question 1
+# Jawaban soal 1
 
 ```
 
 #### Soal 2: Visualisasikan jumlah pelanggan laki-laki dan perempuan
 ```{r}
-# Answer to Question 2
+# Jawaban soal 2
 
 ```
 
 #### Soal 3: Visualisasikan hubungan tenure dan jumlah tagihan bulanan dan lihat keterkaitannya dengan churn atau tidak
 ```{r}
-# Answer to Question 3
+# Jawaban soal 3
 
 ```
 
 #### Soal 4: Visualisasikan jumlah pelanggan laki-laki dan perempuan yang churn
 ```{r}
-# Answer to Question 4
+# Jawaban soal 4
 
 ```
 
@@ -234,6 +234,6 @@ ggplot(data = df_churn, aes(x = Churn, fill = Churn)) +
 Petunjuk: Menggunakan ggplotly
 
 ```{r}
-# Answer to Question 5
+# Jawaban soal 5
 
 ```
